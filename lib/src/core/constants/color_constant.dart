@@ -11,4 +11,6 @@ class ColorConstant {
   static const Color textWhite = Color(0xFFFFFFFF);
   static const Color textGrey = Color(0xFF9E9EB0);
   static const Color fabGlow = Color(0x66FF4D6D);
+  static const Color dialogBackground = Color(0xFF16162A);
+  static const Color dialogOptionBackground = Color(0xFF1E1E38);
 }

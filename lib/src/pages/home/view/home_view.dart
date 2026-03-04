@@ -1,11 +1,8 @@
-import 'package:analysis_app/src/core/constants/color_constant.dart';
 import 'package:analysis_app/src/pages/home/controller/home_view_controller.dart';
-import 'package:analysis_app/src/pages/home/widgets/history_list_widget.dart';
-import 'package:analysis_app/src/pages/home/widgets/home_app_bar_widget.dart';
-import 'package:analysis_app/src/pages/home/widgets/home_fab_widget.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
+import 'package:analysis_app/src/pages/home/widgets/history/history_list_widget.dart';
+import 'package:analysis_app/src/pages/home/widgets/home/home_app_bar_widget.dart';
+import 'package:analysis_app/src/pages/home/widgets/home/home_fab_widget.dart';
+import 'package:analysis_app/src/core/exports/exports.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});

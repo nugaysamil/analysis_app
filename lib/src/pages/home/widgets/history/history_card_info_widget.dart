@@ -1,9 +1,7 @@
-import 'package:analysis_app/src/core/constants/color_constant.dart';
-import 'package:analysis_app/src/core/constants/string_constant.dart';
 import 'package:analysis_app/src/pages/home/controller/home_view_controller.dart';
 import 'package:analysis_app/src/pages/home/model/history_item_model.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:analysis_app/src/core/exports/exports.dart';
+
 
 class HistoryCardInfoWidget extends StatelessWidget {
   const HistoryCardInfoWidget({

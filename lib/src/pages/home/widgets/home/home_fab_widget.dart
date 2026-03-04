@@ -1,7 +1,5 @@
-import 'package:analysis_app/src/core/constants/color_constant.dart';
 import 'package:analysis_app/src/pages/home/controller/home_view_controller.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:analysis_app/src/core/exports/exports.dart';
 
 class HomeFabWidget extends StatelessWidget {
   const HomeFabWidget({super.key, required this.controller});

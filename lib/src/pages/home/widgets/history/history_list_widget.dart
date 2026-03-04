@@ -1,9 +1,6 @@
-import 'package:analysis_app/src/core/constants/color_constant.dart';
-import 'package:analysis_app/src/core/constants/string_constant.dart';
+import 'package:analysis_app/src/core/exports/exports.dart';
 import 'package:analysis_app/src/pages/home/controller/home_view_controller.dart';
-import 'package:analysis_app/src/pages/home/widgets/history_card_widget.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:analysis_app/src/pages/home/widgets/history/history_card_widget.dart';
 import 'package:get/get.dart';
 
 class HistoryListWidget extends StatelessWidget {

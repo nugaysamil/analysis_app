@@ -8,4 +8,7 @@ class StringConstant {
   static const String viewResult = 'View Result';
   static const String noHistoryItems = 'No history items yet';
   static const String newCapture = 'New Capture';
+  static const String chooseSource = 'Choose Source';
+  static const String camera = 'Camera';
+  static const String gallery = 'Gallery';
 }

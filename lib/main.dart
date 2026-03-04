@@ -17,7 +17,7 @@ class AnalysisApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: const Size(393, 852), 
+      designSize: const Size(393, 852), // default iphone 13
       minTextAdapt: true, // Adapts font size to screen width
       builder: (context, child) {
         return GetMaterialApp(

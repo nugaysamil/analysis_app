@@ -1,11 +1,10 @@
-import 'package:analysis_app/src/core/constants/color_constant.dart';
 import 'package:analysis_app/src/pages/home/controller/home_view_controller.dart';
 import 'package:analysis_app/src/pages/home/model/history_item_model.dart';
-import 'package:analysis_app/src/pages/home/widgets/history_card_dismiss_background_widget.dart';
-import 'package:analysis_app/src/pages/home/widgets/history_card_info_widget.dart';
-import 'package:analysis_app/src/pages/home/widgets/history_card_thumbnail_widget.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:analysis_app/src/pages/home/widgets/history/history_card_dismiss_background_widget.dart';
+import 'package:analysis_app/src/pages/home/widgets/history/history_card_info_widget.dart';
+import 'package:analysis_app/src/pages/home/widgets/history/history_card_thumbnail_widget.dart';
+import 'package:analysis_app/src/core/exports/exports.dart';
+
 
 class HistoryCardWidget extends StatelessWidget {
   const HistoryCardWidget({
