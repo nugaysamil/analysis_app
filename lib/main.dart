@@ -1,21 +1,33 @@
+import 'package:analysis_app/src/core/constants/app_theme.dart';
+import 'package:analysis_app/src/core/constants/string_constant.dart';
+import 'package:analysis_app/src/core/routes/app_pages.dart';
+import 'package:analysis_app/src/core/services/service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
-void main() {
-  runApp(const MyApp());
+Future<void> main() async {
+  await Service.init();
+  runApp(const AnalysisApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class AnalysisApp extends StatelessWidget {
+  const AnalysisApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-
-        colorScheme: .fromSeed(seedColor: Colors.deepPurple),
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+    return ScreenUtilInit(
+      designSize: const Size(393, 852), 
+      minTextAdapt: true, // Adapts font size to screen width
+      builder: (context, child) {
+        return GetMaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: StringConstant.appTitle,
+          theme: AppTheme.theme,
+          initialRoute: AppPages.initial,
+          getPages: AppPages.pages,
+        );
+      },
     );
   }
 }
