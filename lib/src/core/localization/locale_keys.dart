@@ -40,4 +40,8 @@ class LocaleKeys {
   static const String date = 'date';
   static const String type = 'type';
   static const String fileSize = 'file_size';
+
+  // Processing
+  static const String processingError = 'processing_error';
+  static const String detectingContent = 'detecting_content';
 }

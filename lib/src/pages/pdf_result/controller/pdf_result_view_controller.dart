@@ -2,10 +2,10 @@ import 'package:analysis_app/src/common/pages/result/controller/base_result_view
 import 'package:analysis_app/src/common/pages/result/model/result_args_model.dart';
 import 'package:analysis_app/src/core/localization/locale_keys.dart';
 import 'package:get/get.dart';
+import 'package:open_file/open_file.dart';
 
 // Manages PDF Result screen state, extends the shared base.
 class PdfResultViewModel extends BaseResultViewModel {
-  // Retrieves navigation arguments as a typed model, null-safe.
   ResultArgsModel? get args => Get.arguments as ResultArgsModel?;
 
   @override
@@ -17,7 +17,10 @@ class PdfResultViewModel extends BaseResultViewModel {
   @override
   String get originalImagePath => args?.originalImagePath ?? '';
 
-  // Document title derived from the file name.
+  // Path to the generated PDF file.
+  String get pdfPath => args?.pdfPath ?? '';
+
+  // Document title for display.
   String get documentTitle => LocaleKeys.documentTitle.tr;
 
   @override
@@ -28,9 +31,11 @@ class PdfResultViewModel extends BaseResultViewModel {
     }
   }
 
-  // Opens the generated PDF file.
+  // Opens the generated PDF in an external viewer.
   @override
   void onActionTap() {
-    // TODO(pdf): Implement PDF open logic
+    if (pdfPath.isNotEmpty) {
+      OpenFile.open(pdfPath);
+    }
   }
 }

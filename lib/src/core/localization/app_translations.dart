@@ -39,6 +39,8 @@ class AppTranslations extends Translations {
     'date': 'Date',
     'type': 'Type',
     'file_size': 'File Size',
+    'processing_error': 'Processing Failed',
+    'detecting_content': 'Detecting content...',
   };
 
   static const Map<String, String> _trTR = {
@@ -67,5 +69,7 @@ class AppTranslations extends Translations {
     'date': 'Tarih',
     'type': 'Tür',
     'file_size': 'Dosya Boyutu',
+    'processing_error': 'İşlem Başarısız',
+    'detecting_content': 'İçerik tespit ediliyor...',
   };
 }

@@ -14,12 +14,14 @@ ResultArgsModel _$ResultArgsModelFromJson(Map<String, dynamic> json) =>
         json['processingType'],
       ),
       processedImagePath: json['processedImagePath'] as String?,
+      pdfPath: json['pdfPath'] as String?,
     );
 
 Map<String, dynamic> _$ResultArgsModelToJson(ResultArgsModel instance) =>
     <String, dynamic>{
       'originalImagePath': instance.originalImagePath,
       'processedImagePath': instance.processedImagePath,
+      'pdfPath': instance.pdfPath,
       'processingType': _$ProcessingTypeEnumMap[instance.processingType]!,
     };
 

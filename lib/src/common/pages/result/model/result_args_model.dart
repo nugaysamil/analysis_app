@@ -9,6 +9,7 @@ class ResultArgsModel {
     required this.originalImagePath,
     required this.processingType,
     this.processedImagePath,
+    this.pdfPath,
   });
 
   factory ResultArgsModel.fromJson(Map<String, dynamic> json) =>
@@ -16,6 +17,7 @@ class ResultArgsModel {
 
   final String originalImagePath;
   final String? processedImagePath;
+  final String? pdfPath;
   final ProcessingType processingType;
 
   Map<String, dynamic> toJson() => _$ResultArgsModelToJson(this);

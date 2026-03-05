@@ -1,7 +1,7 @@
 import 'package:analysis_app/src/common/pages/processing/model/processing_args_model.dart';
 import 'package:analysis_app/src/core/constants/string_constant.dart';
-import 'package:analysis_app/src/core/enum/processing_type.dart';
 import 'package:analysis_app/src/core/routes/app_routes.dart';
+import 'package:analysis_app/src/core/services/content_detection_service.dart';
 import 'package:analysis_app/src/pages/home/model/history_item_model.dart';
 import 'package:analysis_app/src/pages/home/widgets/choose_source/choose_source_dialog_widget.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +12,7 @@ import 'package:intl/intl.dart';
 // Manages home screen state: history list, image picking, navigation.
 class HomeViewModel extends GetxController {
   final RxList<HistoryItemModel> historyItems = <HistoryItemModel>[].obs;
+  final RxBool isDetecting = false.obs;
   final ImagePicker _picker = ImagePicker();
 
   // Formats a DateTime for display on history cards.
@@ -41,13 +42,18 @@ class HomeViewModel extends GetxController {
     historyItems.insert(0, item);
   }
 
-  // Picks an image, navigates to processing, then adds to history on return.
+  // Picks an image, auto-detects content type, navigates to processing,
+  // then adds result to history on return.
   Future<void> _pickImage(ImageSource source) async {
     final file = await _picker.pickImage(source: source);
     if (file == null) return;
 
-    final processingType = ProcessingType.face;
     final path = file.path;
+
+    // Auto-detect content type using ML Kit.
+    isDetecting.value = true;
+    final processingType = await ContentDetectionService.instance.detect(path);
+    isDetecting.value = false;
 
     await Get.toNamed<void>(
       AppRoutes.processing,

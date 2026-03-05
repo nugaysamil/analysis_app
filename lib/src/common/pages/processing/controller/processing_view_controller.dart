@@ -3,14 +3,18 @@ import 'package:analysis_app/src/common/pages/result/model/result_args_model.dar
 import 'package:analysis_app/src/core/enum/processing_type.dart';
 import 'package:analysis_app/src/core/localization/locale_keys.dart';
 import 'package:analysis_app/src/core/routes/app_routes.dart';
+import 'package:analysis_app/src/core/services/document_processing_service.dart';
+import 'package:analysis_app/src/core/services/face_processing_service.dart';
 import 'package:get/get.dart';
 
-// Manages image processing state and progress.
+// Manages image processing state, delegates to the correct service,
+// and reports live progress to the UI.
 class ProcessingViewModel extends GetxController {
   final RxDouble progress = 0.0.obs;
   final RxString stepDescription = ''.obs;
+  final RxBool hasError = false.obs;
+  final RxString errorMessage = ''.obs;
 
-  // Retrieves navigation arguments as a typed model, null-safe.
   ProcessingArgsModel? get args => Get.arguments as ProcessingArgsModel?;
 
   @override
@@ -23,25 +27,56 @@ class ProcessingViewModel extends GetxController {
     _startProcessing();
   }
 
-  // Simulates processing with progress updates, then navigates to result.
+  // Dispatches to the correct processing pipeline based on type.
   Future<void> _startProcessing() async {
-    stepDescription.value = args?.processingType == ProcessingType.face
-        ? LocaleKeys.detectingFaces.tr
-        : LocaleKeys.scanningDocument.tr;
+    try {
+      if (args?.processingType == ProcessingType.face) {
+        await _processFace();
+      } else {
+        await _processDocument();
+      }
+    } catch (e) {
+      hasError.value = true;
+      errorMessage.value = e.toString();
+      stepDescription.value = LocaleKeys.processingError.tr;
 
-    for (var i = 1; i <= 10; i++) {
-      await Future<void>.delayed(const Duration(milliseconds: 300));
-      progress.value = i / 10;
+      await Future<void>.delayed(const Duration(seconds: 2));
+      Get.back<void>();
     }
-
-    _navigateToResult();
   }
 
-  // Determines the result route based on processing type and navigates.
-  void _navigateToResult() {
+  // Runs the face processing pipeline with live progress updates.
+  Future<void> _processFace() async {
+    stepDescription.value = LocaleKeys.detectingFaces.tr;
+    final result = await FaceProcessingService.instance.process(
+      args!.imagePath,
+      onProgress: (p) => progress.value = p,
+    );
+
+    _navigateToResult(processedImagePath: result.processedPath);
+  }
+
+  // Runs the document processing pipeline with live progress updates.
+  Future<void> _processDocument() async {
+    stepDescription.value = LocaleKeys.scanningDocument.tr;
+    final result = await DocumentProcessingService.instance.process(
+      args!.imagePath,
+      onProgress: (p) => progress.value = p,
+    );
+
+    _navigateToResult(
+      processedImagePath: result.processedImagePath,
+      pdfPath: result.pdfPath,
+    );
+  }
+
+  // Builds result args and navigates to the appropriate result screen.
+  void _navigateToResult({String? processedImagePath, String? pdfPath}) {
     final resultArgs = ResultArgsModel(
       originalImagePath: args?.imagePath ?? '',
       processingType: args?.processingType ?? ProcessingType.face,
+      processedImagePath: processedImagePath,
+      pdfPath: pdfPath,
     );
 
     final route = args?.processingType == ProcessingType.face
