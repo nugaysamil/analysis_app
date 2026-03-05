@@ -4,4 +4,5 @@ class StringConstant {
 
   static const String appTitle = 'ImageFlow';
   static const String dateFormat = 'MMM dd, yyyy';
+  static const String pdf = 'PDF';
 }
