@@ -1,4 +1,5 @@
-enum ProcessingType { face, document }
+
+import 'package:analysis_app/src/core/enum/processing_type.dart';
 
 class HistoryItemModel {
 

@@ -1,7 +1,6 @@
 import 'package:analysis_app/src/core/exports/exports.dart';
 import 'package:analysis_app/src/pages/home/controller/home_view_controller.dart';
 import 'package:analysis_app/src/pages/home/widgets/history/history_card_widget.dart';
-import 'package:get/get.dart';
 
 class HistoryListWidget extends StatelessWidget {
   const HistoryListWidget({super.key, required this.controller});

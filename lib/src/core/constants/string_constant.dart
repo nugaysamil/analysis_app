@@ -11,4 +11,7 @@ class StringConstant {
   static const String chooseSource = 'Choose Source';
   static const String camera = 'Camera';
   static const String gallery = 'Gallery';
+  static const String processing = 'Processing...';
+  static const String detectingFaces = 'Detecting faces...';
+  static const String scanningDocument = 'Scanning document...';
 }

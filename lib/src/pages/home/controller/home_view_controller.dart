@@ -1,3 +1,5 @@
+import 'package:analysis_app/src/core/enum/processing_type.dart';
+import 'package:analysis_app/src/core/routes/app_routes.dart';
 import 'package:analysis_app/src/pages/home/model/history_item_model.dart';
 import 'package:analysis_app/src/pages/home/widgets/choose_source/choose_source_dialog_widget.dart';
 import 'package:flutter/material.dart';
@@ -21,35 +23,38 @@ class HomeViewModel extends GetxController {
   }
 
   void onNewCaptureTap() {
-    Get.dialog<void>(
-      ChooseSourceDialogWidget(
-        onCameraTap: _onCameraTap,
-        onGalleryTap: _onGalleryTap,
+    showDialog<ImageSource>(
+      context: Get.context!,
+      builder: (_) => ChooseSourceDialogWidget(
+        onCameraTap: () => Get.back(result: ImageSource.camera),
+        onGalleryTap: () => Get.back(result: ImageSource.gallery),
       ),
-      barrierColor: Colors.black54,
-    );
-  }
-
-  void _onCameraTap() {
-    Get.back<void>();
-    _pickImage(ImageSource.camera);
-  }
-
-  void _onGalleryTap() {
-    Get.back<void>();
-    _pickImage(ImageSource.gallery);
+    ).then((source) {
+      if (source != null) _pickImage(source);
+    });
   }
 
   Future<void> _pickImage(ImageSource source) async {
     final file = await _picker.pickImage(source: source);
     if (file == null) return;
 
+    final processingType = ProcessingType.face;
+    final path = file.path;
+
+    await Get.toNamed<void>(
+      AppRoutes.processing,
+      arguments: {
+        'imagePath': path,
+        'processingType': processingType,
+      },
+    );
+
     addItem(
       HistoryItemModel(
         id: '${DateTime.now().millisecondsSinceEpoch}',
-        processingType: ProcessingType.face,
+        processingType: processingType,
         date: DateTime.now(),
-        thumbnailPath: file.path,
+        thumbnailPath: path,
       ),
     );
   }

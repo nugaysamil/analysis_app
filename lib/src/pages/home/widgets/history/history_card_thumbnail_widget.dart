@@ -1,4 +1,4 @@
-import 'package:analysis_app/src/pages/home/model/history_item_model.dart';
+import 'package:analysis_app/src/core/enum/processing_type.dart';
 import 'package:analysis_app/src/core/exports/exports.dart';
 
 
