@@ -18,16 +18,6 @@ class HomeViewModel extends GetxController {
   String formatHistoryDate(DateTime date) =>
       DateFormat(StringConstant.dateFormat).format(date);
 
-  // Removes a history item by its id.
-  void deleteItem(String id) {
-    historyItems.removeWhere((item) => item.id == id);
-  }
-
-  // Inserts a new item at the top of the history list.
-  void addItem(HistoryItemModel item) {
-    historyItems.insert(0, item);
-  }
-
   // Opens the choose source dialog (Camera / Gallery).
   void onNewCaptureTap() {
     showDialog<ImageSource>(
@@ -39,6 +29,16 @@ class HomeViewModel extends GetxController {
     ).then((source) {
       if (source != null) _pickImage(source);
     });
+  }
+
+  // Removes a history item by its id.
+  void deleteItem(String id) {
+    historyItems.removeWhere((item) => item.id == id);
+  }
+
+  // Inserts a new item at the top of the history list.
+  void addItem(HistoryItemModel item) {
+    historyItems.insert(0, item);
   }
 
   // Picks an image, navigates to processing, then adds to history on return.

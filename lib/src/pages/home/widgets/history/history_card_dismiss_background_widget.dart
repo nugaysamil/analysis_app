@@ -8,7 +8,7 @@ class HistoryCardDismissBackgroundWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.centerRight,
-      padding: EdgeInsets.only(right: 20.w),
+      padding: EdgeInsets.symmetric(horizontal: 20.w),
       decoration: BoxDecoration(
         color: Colors.red.shade900,
         borderRadius: BorderRadius.circular(16.r),
