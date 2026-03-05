@@ -10,12 +10,22 @@ typedef ProgressCallback = void Function(double progress);
 class ImageProcessingHelper {
   ImageProcessingHelper._();
 
-  // Reads the file bytes and decodes to an img.Image instance.
+  // Reads the file bytes, decodes to an img.Image instance,
+  // and applies EXIF orientation so pixel data matches the visual orientation.
   static Future<img.Image> loadImage(String imagePath) async {
     final bytes = await File(imagePath).readAsBytes();
     final decoded = img.decodeImage(bytes);
     if (decoded == null) throw Exception('Failed to decode image');
-    return decoded;
+    return img.bakeOrientation(decoded);
+  }
+
+  // Saves the baked (EXIF-corrected) image to a temp file so ML Kit
+  // reads pixel data in the same orientation as the decoded image.
+  static Future<String> saveTempBaked(img.Image image) async {
+    final dir = await getApplicationDocumentsDirectory();
+    final path = '${dir.path}/temp_baked.jpg';
+    await File(path).writeAsBytes(img.encodeJpg(image, quality: 95));
+    return path;
   }
 
   // Encodes the image as JPEG and saves to the app documents directory.

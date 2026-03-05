@@ -45,7 +45,11 @@ class HomeViewModel extends GetxController {
   // Picks an image, auto-detects content type, navigates to processing,
   // then adds result to history on return.
   Future<void> _pickImage(ImageSource source) async {
-    final file = await _picker.pickImage(source: source);
+    final file = await _picker.pickImage(
+      source: source,
+      maxWidth: 1920,
+      maxHeight: 1920,
+    );
     if (file == null) return;
 
     final path = file.path;

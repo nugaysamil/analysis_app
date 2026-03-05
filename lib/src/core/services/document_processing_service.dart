@@ -24,13 +24,17 @@ class DocumentProcessingService
     String imagePath, {
     ProgressCallback? onProgress,
   }) async {
-    // Load and decode the source image from disk.
+    // Load, decode and apply EXIF orientation correction.
     onProgress?.call(0.1);
     final original = await ImageProcessingHelper.loadImage(imagePath);
 
-    // Run ML Kit text recognition (OCR) on the input image.
+    // Save the orientation-corrected image so ML Kit coordinates
+    // match the decoded pixel data exactly.
+    final bakedPath = await ImageProcessingHelper.saveTempBaked(original);
+
+    // Run ML Kit text recognition (OCR) on the corrected image.
     onProgress?.call(0.2);
-    final inputImage = InputImage.fromFilePath(imagePath);
+    final inputImage = InputImage.fromFilePath(bakedPath);
     final recognizedText = await _textRecognizer.processImage(inputImage);
 
     // Detect document boundaries from text blocks and crop.

@@ -9,32 +9,42 @@ class ContentDetectionService {
 
   static final ContentDetectionService instance = ContentDetectionService._();
 
+  // Fast mode without landmarks for quicker, more tolerant detection.
   final FaceDetector _faceDetector = FaceDetector(
     options: FaceDetectorOptions(
-      enableLandmarks: true,
-      performanceMode: FaceDetectorMode.accurate,
+      minFaceSize: 0.1,
+      performanceMode: FaceDetectorMode.fast,
     ),
   );
 
   final TextRecognizer _textRecognizer = TextRecognizer();
 
+  // Minimum character count to consider an image as a document.
+  static const int _minDocumentTextLength = 20;
+
   // Detects content type by running face and text detection in parallel.
-  // Prioritizes face detection; falls back to document if text is found.
+  // Prioritizes face detection; falls back to document only if
+  // meaningful amount of text is found.
   Future<ProcessingType> detect(String imagePath) async {
-    final inputImage = InputImage.fromFilePath(imagePath);
+    try {
+      final inputImage = InputImage.fromFilePath(imagePath);
 
-    final results = await Future.wait([
-      _faceDetector.processImage(inputImage),
-      _textRecognizer.processImage(inputImage),
-    ]);
+      final results = await Future.wait([
+        _faceDetector.processImage(inputImage),
+        _textRecognizer.processImage(inputImage),
+      ]);
 
-    final faces = results[0] as List<Face>;
-    final recognizedText = results[1] as RecognizedText;
+      final faces = results[0] as List<Face>;
+      final recognizedText = results[1] as RecognizedText;
 
-    if (faces.isNotEmpty) return ProcessingType.face;
-    if (recognizedText.text.trim().isNotEmpty) return ProcessingType.document;
+      if (faces.isNotEmpty) return ProcessingType.face;
+      if (recognizedText.text.trim().length >= _minDocumentTextLength) {
+        return ProcessingType.document;
+      }
+    } catch (_) {
+      // Detection failed — default to face.
+    }
 
-    // Default to face if nothing detected (user can re-pick).
     return ProcessingType.face;
   }
 
