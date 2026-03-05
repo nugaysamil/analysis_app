@@ -13,7 +13,7 @@ class HistoryListWidget extends StatelessWidget {
       if (controller.historyItems.isEmpty) {
         return Center(
           child: Text(
-            StringConstant.noHistoryItems,
+            LocaleKeys.noHistoryItems.tr,
             style: TextStyle(
               color: ColorConstant.textGrey,
               fontSize: 16.sp,

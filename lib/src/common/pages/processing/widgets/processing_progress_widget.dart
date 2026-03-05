@@ -12,7 +12,7 @@ class ProcessingProgressWidget extends StatelessWidget {
       () => Column(
         children: [
           Text(
-            StringConstant.processing,
+            LocaleKeys.processing.tr,
             style: TextStyle(
               color: ColorConstant.textWhite,
               fontSize: 22.sp,

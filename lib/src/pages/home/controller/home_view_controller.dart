@@ -1,4 +1,5 @@
 import 'package:analysis_app/src/common/pages/processing/model/processing_args_model.dart';
+import 'package:analysis_app/src/core/constants/string_constant.dart';
 import 'package:analysis_app/src/core/enum/processing_type.dart';
 import 'package:analysis_app/src/core/routes/app_routes.dart';
 import 'package:analysis_app/src/pages/home/model/history_item_model.dart';
@@ -8,21 +9,26 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
+// Manages home screen state: history list, image picking, navigation.
 class HomeViewModel extends GetxController {
   final RxList<HistoryItemModel> historyItems = <HistoryItemModel>[].obs;
   final ImagePicker _picker = ImagePicker();
 
+  // Formats a DateTime for display on history cards.
   String formatHistoryDate(DateTime date) =>
-      DateFormat('MMM dd, yyyy').format(date);
+      DateFormat(StringConstant.dateFormat).format(date);
 
+  // Removes a history item by its id.
   void deleteItem(String id) {
     historyItems.removeWhere((item) => item.id == id);
   }
 
+  // Inserts a new item at the top of the history list.
   void addItem(HistoryItemModel item) {
     historyItems.insert(0, item);
   }
 
+  // Opens the choose source dialog (Camera / Gallery).
   void onNewCaptureTap() {
     showDialog<ImageSource>(
       context: Get.context!,
@@ -35,6 +41,7 @@ class HomeViewModel extends GetxController {
     });
   }
 
+  // Picks an image, navigates to processing, then adds to history on return.
   Future<void> _pickImage(ImageSource source) async {
     final file = await _picker.pickImage(source: source);
     if (file == null) return;
@@ -60,6 +67,7 @@ class HomeViewModel extends GetxController {
     );
   }
 
+  // Navigates to the result detail screen.
   void onItemTap(HistoryItemModel item) {
     // Navigate to result detail screen
   }

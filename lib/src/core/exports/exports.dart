@@ -2,6 +2,8 @@
 export 'package:analysis_app/src/core/constants/color_constant.dart';
 // App string constants
 export 'package:analysis_app/src/core/constants/string_constant.dart';
+// Localization keys for .tr extension
+export 'package:analysis_app/src/core/localization/locale_keys.dart';
 // Flutter material widgets and framework
 export 'package:flutter/material.dart';
 // Responsive sizing (sp, w, h, r)

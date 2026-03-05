@@ -26,7 +26,7 @@ class ChooseSourceDialogWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(
-              StringConstant.chooseSource,
+              LocaleKeys.chooseSource.tr,
               style: TextStyle(
                 color: ColorConstant.textWhite,
                 fontSize: 20.sp,
@@ -36,13 +36,13 @@ class ChooseSourceDialogWidget extends StatelessWidget {
             SizedBox(height: 20.h),
             ChooseSourceOptionTileWidget(
               icon: Icons.camera_alt_outlined,
-              label: StringConstant.camera,
+              label: LocaleKeys.camera.tr,
               onTap: onCameraTap,
             ),
             SizedBox(height: 12.h),
             ChooseSourceOptionTileWidget(
               icon: Icons.photo_library_outlined,
-              label: StringConstant.gallery,
+              label: LocaleKeys.gallery.tr,
               onTap: onGalleryTap,
             ),
           ],

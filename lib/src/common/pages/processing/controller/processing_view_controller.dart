@@ -1,13 +1,14 @@
 import 'package:analysis_app/src/common/pages/processing/model/processing_args_model.dart';
-import 'package:analysis_app/src/core/constants/string_constant.dart';
 import 'package:analysis_app/src/core/enum/processing_type.dart';
+import 'package:analysis_app/src/core/localization/locale_keys.dart';
 import 'package:get/get.dart';
 
+// Manages image processing state and progress.
 class ProcessingViewModel extends GetxController {
-
   final RxDouble progress = 0.0.obs;
   final RxString stepDescription = ''.obs;
 
+  // Retrieves navigation arguments as a typed model, null-safe.
   ProcessingArgsModel? get args => Get.arguments as ProcessingArgsModel?;
 
   @override
@@ -20,10 +21,11 @@ class ProcessingViewModel extends GetxController {
     _startProcessing();
   }
 
+  // Simulates processing with progress updates.
   Future<void> _startProcessing() async {
     stepDescription.value = args?.processingType == ProcessingType.face
-        ? StringConstant.detectingFaces
-        : StringConstant.scanningDocument;
+        ? LocaleKeys.detectingFaces.tr
+        : LocaleKeys.scanningDocument.tr;
 
     for (var i = 1; i <= 10; i++) {
       await Future<void>.delayed(const Duration(milliseconds: 300));

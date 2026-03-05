@@ -17,8 +17,8 @@ class HistoryCardInfoWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final title = item.processingType == ProcessingType.face
-        ? StringConstant.faceProcessed
-        : StringConstant.documentScan;
+        ? LocaleKeys.faceProcessed.tr
+        : LocaleKeys.documentScan.tr;
 
     final dateStr = controller.formatHistoryDate(item.date);
 

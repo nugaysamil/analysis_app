@@ -1,5 +1,6 @@
 import 'package:analysis_app/src/core/constants/app_theme.dart';
 import 'package:analysis_app/src/core/constants/string_constant.dart';
+import 'package:analysis_app/src/core/localization/app_translations.dart';
 import 'package:analysis_app/src/core/routes/app_pages.dart';
 import 'package:analysis_app/src/core/services/service.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +24,9 @@ class AnalysisApp extends StatelessWidget {
         return GetMaterialApp(
           debugShowCheckedModeBanner: false,
           title: StringConstant.appTitle,
+          translations: AppTranslations(),
+          locale: AppTranslations.locale,
+          fallbackLocale: AppTranslations.fallbackLocale,
           theme: AppTheme.theme,
           initialRoute: AppPages.initial,
           getPages: AppPages.pages,

@@ -9,7 +9,7 @@ class HomeAppBarWidget extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 24.h),
       child: Text(
-        StringConstant.appTitle,
+        LocaleKeys.appTitle.tr,
         style: TextStyle(
           color: ColorConstant.textWhite,
           fontSize: 28.sp,
