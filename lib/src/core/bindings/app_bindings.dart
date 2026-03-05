@@ -1,5 +1,6 @@
 import 'package:analysis_app/src/common/pages/processing/controller/processing_view_controller.dart';
 import 'package:analysis_app/src/pages/face_result/controller/face_result_view_controller.dart';
+import 'package:analysis_app/src/pages/history_detail/controller/history_detail_view_controller.dart';
 import 'package:analysis_app/src/pages/home/controller/home_view_controller.dart';
 import 'package:analysis_app/src/pages/pdf_result/controller/pdf_result_view_controller.dart';
 import 'package:get/get.dart';
@@ -33,6 +34,13 @@ class AppBindings {
   static BindingsBuilder<dynamic> pdfResult() {
     return BindingsBuilder(() {
       Get.lazyPut<PdfResultViewModel>(PdfResultViewModel.new);
+    });
+  }
+
+  // History detail page dependencies.
+  static BindingsBuilder<dynamic> historyDetail() {
+    return BindingsBuilder(() {
+      Get.lazyPut<HistoryDetailViewModel>(HistoryDetailViewModel.new);
     });
   }
 }

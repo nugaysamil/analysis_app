@@ -36,6 +36,9 @@ class AppTranslations extends Translations {
     'pdf_created': 'PDF Created',
     'document_title': 'Document Title',
     'open_pdf': 'Open PDF',
+    'date': 'Date',
+    'type': 'Type',
+    'file_size': 'File Size',
   };
 
   static const Map<String, String> _trTR = {
@@ -61,5 +64,8 @@ class AppTranslations extends Translations {
     'pdf_created': 'PDF Oluşturuldu',
     'document_title': 'Doküman Başlığı',
     'open_pdf': 'PDF Aç',
+    'date': 'Tarih',
+    'type': 'Tür',
+    'file_size': 'Dosya Boyutu',
   };
 }

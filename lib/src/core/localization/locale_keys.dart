@@ -35,4 +35,9 @@ class LocaleKeys {
   static const String pdfCreated = 'pdf_created';
   static const String documentTitle = 'document_title';
   static const String openPdf = 'open_pdf';
+
+  // History detail
+  static const String date = 'date';
+  static const String type = 'type';
+  static const String fileSize = 'file_size';
 }

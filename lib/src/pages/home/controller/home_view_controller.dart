@@ -67,8 +67,8 @@ class HomeViewModel extends GetxController {
     );
   }
 
-  // Navigates to the result detail screen.
+  // Navigates to the history detail screen with the selected item.
   void onItemTap(HistoryItemModel item) {
-    // Navigate to result detail screen
+    Get.toNamed<void>(AppRoutes.historyDetail, arguments: item);
   }
 }
