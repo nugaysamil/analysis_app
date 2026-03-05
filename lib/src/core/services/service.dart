@@ -1,3 +1,4 @@
+import 'package:analysis_app/src/core/cache/local_cache_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -29,6 +30,8 @@ class Service {
     );
   }
 
-  // Registers GetX services (add future services here).
-  static Future<void> _initServices() async {}
+  // Initializes Hive cache and registers GetX services.
+  static Future<void> _initServices() async {
+    await LocalCacheService.instance.init();
+  }
 }
