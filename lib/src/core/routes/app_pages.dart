@@ -1,7 +1,7 @@
 import 'package:analysis_app/src/core/bindings/app_bindings.dart';
 import 'package:analysis_app/src/core/routes/app_routes.dart';
 import 'package:analysis_app/src/pages/home/view/home_view.dart';
-import 'package:analysis_app/src/pages/processing/view/processing_view.dart';
+import 'package:analysis_app/src/common/pages/processing/view/processing_view.dart';
 import 'package:get/get.dart';
 
 // Defines all pages with their routes, bindings and transitions.

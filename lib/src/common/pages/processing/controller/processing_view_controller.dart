@@ -1,27 +1,27 @@
+import 'package:analysis_app/src/common/pages/processing/model/processing_args_model.dart';
 import 'package:analysis_app/src/core/constants/string_constant.dart';
 import 'package:analysis_app/src/core/enum/processing_type.dart';
 import 'package:get/get.dart';
 
 class ProcessingViewModel extends GetxController {
-  final String imagePath;
-  final ProcessingType processingType;
-
-  ProcessingViewModel({
-    required this.imagePath,
-    required this.processingType,
-  });
 
   final RxDouble progress = 0.0.obs;
   final RxString stepDescription = ''.obs;
 
+  ProcessingArgsModel? get args => Get.arguments as ProcessingArgsModel?;
+
   @override
   void onInit() {
     super.onInit();
+    if (args == null) {
+      Get.back<void>();
+      return;
+    }
     _startProcessing();
   }
 
   Future<void> _startProcessing() async {
-    stepDescription.value = processingType == ProcessingType.face
+    stepDescription.value = args?.processingType == ProcessingType.face
         ? StringConstant.detectingFaces
         : StringConstant.scanningDocument;
 

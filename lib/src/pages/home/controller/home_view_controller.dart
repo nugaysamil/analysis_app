@@ -1,3 +1,4 @@
+import 'package:analysis_app/src/common/pages/processing/model/processing_args_model.dart';
 import 'package:analysis_app/src/core/enum/processing_type.dart';
 import 'package:analysis_app/src/core/routes/app_routes.dart';
 import 'package:analysis_app/src/pages/home/model/history_item_model.dart';
@@ -43,10 +44,10 @@ class HomeViewModel extends GetxController {
 
     await Get.toNamed<void>(
       AppRoutes.processing,
-      arguments: {
-        'imagePath': path,
-        'processingType': processingType,
-      },
+      arguments: ProcessingArgsModel(
+        imagePath: path,
+        processingType: processingType,
+      ),
     );
 
     addItem(
