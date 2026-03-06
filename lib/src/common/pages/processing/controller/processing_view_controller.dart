@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:analysis_app/src/common/pages/processing/model/processing_args_model.dart';
 import 'package:analysis_app/src/common/pages/result/model/result_args_model.dart';
 import 'package:analysis_app/src/core/enum/processing_type.dart';
@@ -36,11 +38,12 @@ class ProcessingViewModel extends GetxController {
         await _processDocument();
       }
     } catch (e) {
+      log('Processing failed: $e', name: 'ProcessingViewModel');
       hasError.value = true;
       errorMessage.value = e.toString();
       stepDescription.value = LocaleKeys.processingError.tr;
 
-      await Future<void>.delayed(const Duration(seconds: 2));
+      await Future<void>.delayed(const Duration(seconds: 3));
       Get.back<void>();
     }
   }

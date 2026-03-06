@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:analysis_app/src/core/services/base/base_processing_service.dart';
@@ -7,6 +8,7 @@ import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart
 import 'package:image/image.dart' as img;
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
+import 'package:printing/printing.dart';
 
 // Handles the full document processing pipeline:
 // text recognition -> contrast enhance -> crop -> PDF export.
@@ -28,13 +30,15 @@ class DocumentProcessingService
     onProgress?.call(0.1);
     final original = await ImageProcessingHelper.loadImage(imagePath);
 
-    // Save the orientation-corrected image so ML Kit coordinates
-    // match the decoded pixel data exactly.
-    final bakedPath = await ImageProcessingHelper.saveTempBaked(original);
+    // Prepare OCR-optimized image: grayscale + sharpen + high contrast
+    // so ML Kit reads characters more accurately.
+    onProgress?.call(0.15);
+    final ocrImage = _prepareForOcr(original);
+    final ocrPath = await ImageProcessingHelper.saveTempBaked(ocrImage);
 
-    // Run ML Kit text recognition (OCR) on the corrected image.
-    onProgress?.call(0.2);
-    final inputImage = InputImage.fromFilePath(bakedPath);
+    // Run ML Kit text recognition (OCR) on the optimized image.
+    onProgress?.call(0.3);
+    final inputImage = InputImage.fromFilePath(ocrPath);
     final recognizedText = await _textRecognizer.processImage(inputImage);
 
     // Detect document boundaries from text blocks and crop.
@@ -57,9 +61,10 @@ class DocumentProcessingService
     onProgress?.call(0.9);
     final dirPath = await ImageProcessingHelper.getOutputDirectory();
     final timestamp = DateTime.now().millisecondsSinceEpoch;
+    final normalizedText = _normalizeOcrText(recognizedText.text);
     final pdfPath = await _generatePdf(
       processedPath,
-      recognizedText.text,
+      normalizedText,
       dirPath,
       timestamp,
     );
@@ -73,6 +78,14 @@ class DocumentProcessingService
       pdfPath: pdfPath,
       recognizedText: recognizedText.text,
     );
+  }
+
+  // Converts image to grayscale, sharpens, and boosts contrast
+  // to maximize ML Kit text recognition accuracy.
+  img.Image _prepareForOcr(img.Image image) {
+    var result = img.grayscale(image);
+    result = img.adjustColor(result, contrast: 1.5, brightness: 1.1);
+    return result;
   }
 
   // Crops the image to text region boundaries if text blocks are found.
@@ -128,24 +141,116 @@ class DocumentProcessingService
     final imageBytes = await File(processedImagePath).readAsBytes();
     final pdfImage = pw.MemoryImage(imageBytes);
 
+    // Page 1: image only (full page, scaled to fit — avoids overflow).
     pdf.addPage(
-      pw.MultiPage(
+      pw.Page(
         pageFormat: PdfPageFormat.a4,
-        build: (context) => [
-          pw.Image(pdfImage, fit: pw.BoxFit.fitWidth),
-          pw.SizedBox(height: 20),
-          if (text.isNotEmpty)
-            pw.Text(
-              text,
-              style: const pw.TextStyle(fontSize: 12),
-            ),
-        ],
+        build: (context) =>
+            pw.Center(child: pw.Image(pdfImage, fit: pw.BoxFit.contain)),
       ),
     );
 
+    // Load Roboto font for Turkish character support.
+    pw.TextStyle textStyle = const pw.TextStyle(fontSize: 12);
+    try {
+      final font = await PdfGoogleFonts.robotoRegular();
+      textStyle = pw.TextStyle(font: font, fontSize: 12);
+    } catch (_) {
+      // Use default font if Google Font fails.
+    }
+
+    // Page 2+: OCR text as paragraphs.
+    if (text.isNotEmpty) {
+      try {
+        // Split by double newline (paragraphs), then by length.
+        const maxChunkLength = 400;
+        final paragraphs = text.split(RegExp(r'\n\n+'));
+        final textWidgets = <pw.Widget>[];
+
+        for (var p = 0; p < paragraphs.length; p++) {
+          final para = paragraphs[p].trim();
+          if (para.isEmpty) continue;
+
+          if (p > 0) textWidgets.add(pw.SizedBox(height: 10));
+
+          if (para.length <= maxChunkLength) {
+            textWidgets.add(pw.Text(para, style: textStyle));
+          } else {
+            for (var i = 0; i < para.length; i += maxChunkLength) {
+              final end = (i + maxChunkLength).clamp(0, para.length);
+              if (end > i) {
+                textWidgets.add(
+                  pw.Text(para.substring(i, end), style: textStyle),
+                );
+              }
+            }
+          }
+        }
+
+        if (textWidgets.isNotEmpty) {
+          pdf.addPage(
+            pw.MultiPage(
+              pageFormat: PdfPageFormat.a4,
+              build: (context) => textWidgets,
+            ),
+          );
+        }
+      } catch (_) {
+        // Skip text if rendering fails.
+      }
+    }
+
     final pdfPath = '$dirPath/document_$timestamp.pdf';
-    await File(pdfPath).writeAsBytes(await pdf.save());
+    final bytes = await pdf.save();
+    await File(pdfPath).writeAsBytes(bytes);
+    log(
+      'PDF written: $pdfPath, size: ${bytes.length} bytes, '
+      'image: ${imageBytes.length} bytes, text length: ${text.length}',
+      name: 'DocumentProcessing',
+    );
     return pdfPath;
+  }
+
+  // Normalizes OCR output: collapse extra whitespace, join broken lines
+  // within the same paragraph while preserving actual paragraph breaks.
+  String _normalizeOcrText(String text) {
+    if (text.trim().isEmpty) return text;
+
+    final lines = text
+        .split('\n')
+        .map((l) => l.replaceAll(RegExp(r'[ \t]+'), ' ').trim())
+        .toList();
+
+    const sentenceEnds = '.!?:';
+    final paragraphs = <String>[];
+    var current = '';
+
+    for (final line in lines) {
+      if (line.isEmpty) {
+        if (current.isNotEmpty) {
+          paragraphs.add(current);
+          current = '';
+        }
+        continue;
+      }
+
+      if (current.isEmpty) {
+        current = line;
+      } else {
+        final endsWithSentence = sentenceEnds.contains(
+          current[current.length - 1],
+        );
+        if (endsWithSentence) {
+          paragraphs.add(current);
+          current = line;
+        } else {
+          current = '$current $line';
+        }
+      }
+    }
+    if (current.isNotEmpty) paragraphs.add(current);
+
+    return paragraphs.join('\n\n');
   }
 
   @override

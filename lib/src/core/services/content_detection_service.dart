@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:analysis_app/src/core/enum/processing_type.dart';
 import 'package:google_mlkit_face_detection/google_mlkit_face_detection.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
@@ -41,8 +43,8 @@ class ContentDetectionService {
       if (recognizedText.text.trim().length >= _minDocumentTextLength) {
         return ProcessingType.document;
       }
-    } catch (_) {
-      // Detection failed — default to face.
+    } catch (e) {
+      log('Detection failed: $e', name: 'ContentDetection');
     }
 
     return ProcessingType.face;
