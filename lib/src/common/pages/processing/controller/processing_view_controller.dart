@@ -2,11 +2,13 @@ import 'dart:developer';
 
 import 'package:analysis_app/src/common/pages/processing/model/processing_args_model.dart';
 import 'package:analysis_app/src/common/pages/result/model/result_args_model.dart';
+import 'package:analysis_app/src/core/cache/local_cache_service.dart';
 import 'package:analysis_app/src/core/enum/processing_type.dart';
 import 'package:analysis_app/src/core/localization/locale_keys.dart';
 import 'package:analysis_app/src/core/routes/app_routes.dart';
 import 'package:analysis_app/src/core/services/document_processing_service.dart';
 import 'package:analysis_app/src/core/services/face_processing_service.dart';
+import 'package:analysis_app/src/pages/home/model/history_item_model.dart';
 import 'package:get/get.dart';
 
 // Manages image processing state, delegates to the correct service,
@@ -56,6 +58,10 @@ class ProcessingViewModel extends GetxController {
       onProgress: (p) => progress.value = p,
     );
 
+    await _saveToHistory(
+      processedImagePath: result.processedPath,
+    );
+
     _navigateToResult(processedImagePath: result.processedPath);
   }
 
@@ -67,10 +73,31 @@ class ProcessingViewModel extends GetxController {
       onProgress: (p) => progress.value = p,
     );
 
+    await _saveToHistory(
+      processedImagePath: result.processedImagePath,
+      pdfPath: result.pdfPath,
+    );
+
     _navigateToResult(
       processedImagePath: result.processedImagePath,
       pdfPath: result.pdfPath,
     );
+  }
+
+  // Persists the processing result as a history entry in local cache.
+  Future<void> _saveToHistory({
+    String? processedImagePath,
+    String? pdfPath,
+  }) async {
+    final item = HistoryItemModel(
+      id: '${DateTime.now().millisecondsSinceEpoch}',
+      processingType: args!.processingType,
+      date: DateTime.now(),
+      thumbnailPath: args!.imagePath,
+      processedImagePath: processedImagePath,
+      pdfPath: pdfPath,
+    );
+    await LocalCacheService.instance.saveHistoryItem(item);
   }
 
   // Builds result args and navigates to the appropriate result screen.

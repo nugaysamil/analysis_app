@@ -1,34 +1,30 @@
 import 'package:analysis_app/src/common/pages/result/controller/base_result_view_controller.dart';
 import 'package:analysis_app/src/common/pages/result/model/result_args_model.dart';
-import 'package:analysis_app/src/core/localization/locale_keys.dart';
 import 'package:get/get.dart';
 
 // Manages Face Result screen state, extends the shared base.
 class FaceResultViewModel extends BaseResultViewModel {
-  // Retrieves navigation arguments as a typed model, null-safe.
-  ResultArgsModel? get args => Get.arguments as ResultArgsModel?;
-
-  @override
-  String get pageTitle => LocaleKeys.faceResult.tr;
-
-  @override
-  String get actionButtonText => LocaleKeys.done.tr;
-
-  @override
-  String get originalImagePath => args?.originalImagePath ?? '';
-
-  // Path of the processed (B&W) face image.
-  String get processedImagePath => args?.processedImagePath ?? '';
+  String originalImagePath = '';
+  String processedImagePath = '';
+  int facesDetected = 0;
 
   @override
   void onInit() {
     super.onInit();
+    final args = Get.arguments as ResultArgsModel?;
     if (args == null) {
       Get.back<void>();
+      return;
     }
+    _initFromArgs(args);
   }
 
-  // Navigates back to home after user confirms the result.
+  // Parses navigation arguments and populates local state.
+  void _initFromArgs(ResultArgsModel args) {
+    originalImagePath = args.originalImagePath;
+    processedImagePath = args.processedImagePath ?? '';
+  }
+
   @override
   void onActionTap() {
     Get.back<void>();

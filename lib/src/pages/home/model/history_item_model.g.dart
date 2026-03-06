@@ -15,6 +15,8 @@ HistoryItemModel _$HistoryItemModelFromJson(Map<String, dynamic> json) =>
       ),
       date: DateTime.parse(json['date'] as String),
       thumbnailPath: json['thumbnailPath'] as String?,
+      processedImagePath: json['processedImagePath'] as String?,
+      pdfPath: json['pdfPath'] as String?,
     );
 
 Map<String, dynamic> _$HistoryItemModelToJson(HistoryItemModel instance) =>
@@ -23,6 +25,8 @@ Map<String, dynamic> _$HistoryItemModelToJson(HistoryItemModel instance) =>
       'processingType': _$ProcessingTypeEnumMap[instance.processingType]!,
       'date': instance.date.toIso8601String(),
       'thumbnailPath': instance.thumbnailPath,
+      'processedImagePath': instance.processedImagePath,
+      'pdfPath': instance.pdfPath,
     };
 
 const _$ProcessingTypeEnumMap = {

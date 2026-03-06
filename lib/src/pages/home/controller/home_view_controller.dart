@@ -1,4 +1,5 @@
 import 'package:analysis_app/src/common/pages/processing/model/processing_args_model.dart';
+import 'package:analysis_app/src/core/cache/local_cache_service.dart';
 import 'package:analysis_app/src/core/constants/string_constant.dart';
 import 'package:analysis_app/src/core/routes/app_routes.dart';
 import 'package:analysis_app/src/core/services/content_detection_service.dart';
@@ -14,6 +15,18 @@ class HomeViewModel extends GetxController {
   final RxList<HistoryItemModel> historyItems = <HistoryItemModel>[].obs;
   final RxBool isDetecting = false.obs;
   final ImagePicker _picker = ImagePicker();
+
+  @override
+  void onInit() {
+    super.onInit();
+    _loadHistory();
+  }
+
+  // Loads persisted history items from local cache.
+  void _loadHistory() {
+    final items = LocalCacheService.instance.getHistoryItems();
+    historyItems.assignAll(items);
+  }
 
   // Formats a DateTime for display on history cards.
   String formatHistoryDate(DateTime date) =>
@@ -32,24 +45,16 @@ class HomeViewModel extends GetxController {
     });
   }
 
-  // Removes a history item by its id.
-  void deleteItem(String id) {
+  // Removes a history item from both the local list and persistent cache.
+  Future<void> deleteItem(String id) async {
     historyItems.removeWhere((item) => item.id == id);
-  }
-
-  // Inserts a new item at the top of the history list.
-  void addItem(HistoryItemModel item) {
-    historyItems.insert(0, item);
+    await LocalCacheService.instance.deleteHistoryItem(id);
   }
 
   // Picks an image, auto-detects content type, navigates to processing,
-  // then adds result to history on return.
+  // then refreshes history list from cache on return.
   Future<void> _pickImage(ImageSource source) async {
-    final file = await _picker.pickImage(
-      source: source,
-      maxWidth: 1920,
-      maxHeight: 1920,
-    );
+    final file = await _picker.pickImage(source: source);
     if (file == null) return;
 
     final path = file.path;
@@ -67,14 +72,8 @@ class HomeViewModel extends GetxController {
       ),
     );
 
-    addItem(
-      HistoryItemModel(
-        id: '${DateTime.now().millisecondsSinceEpoch}',
-        processingType: processingType,
-        date: DateTime.now(),
-        thumbnailPath: path,
-      ),
-    );
+    // Refresh history from cache after returning from the processing flow.
+    _loadHistory();
   }
 
   // Navigates to the history detail screen with the selected item.

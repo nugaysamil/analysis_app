@@ -16,7 +16,7 @@ class PdfResultPreviewWidget extends StatelessWidget {
           const PdfResultIconWidget(),
           SizedBox(height: 20.h),
           Text(
-            controller.documentTitle,
+            LocaleKeys.documentTitle.tr,
             style: TextStyle(
               color: ColorConstant.textWhite,
               fontSize: 20.sp,

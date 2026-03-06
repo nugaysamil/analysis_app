@@ -16,14 +16,14 @@ class PdfResultView extends StatelessWidget {
         child: Column(
           children: [
             ResultAppBarWidget(
-              title: controller.pageTitle,
+              title: LocaleKeys.pdfCreated.tr,
               onBackTap: controller.onBackTap,
             ),
             Expanded(
               child: PdfResultPreviewWidget(controller: controller),
             ),
             ResultActionButtonWidget(
-              label: controller.actionButtonText,
+              label: LocaleKeys.openPdf.tr,
               onTap: controller.onActionTap,
             ),
           ],

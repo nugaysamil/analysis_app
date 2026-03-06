@@ -25,7 +25,9 @@ class HistoryDetailMetadataWidget extends StatelessWidget {
           Divider(color: ColorConstant.textGrey.withValues(alpha: 0.15), height: 24.h),
           HistoryDetailMetadataRowWidget(
             label: LocaleKeys.type.tr,
-            value: controller.processingTypeLabel,
+            value: controller.isFace
+                ? LocaleKeys.faceProcessed.tr
+                : LocaleKeys.documentScan.tr,
           ),
           Divider(color: ColorConstant.textGrey.withValues(alpha: 0.15), height: 24.h),
           HistoryDetailMetadataRowWidget(

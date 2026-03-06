@@ -10,6 +10,8 @@ class HistoryItemModel {
     required this.processingType,
     required this.date,
     this.thumbnailPath,
+    this.processedImagePath,
+    this.pdfPath,
   });
 
   factory HistoryItemModel.fromJson(Map<String, dynamic> json) =>
@@ -19,6 +21,8 @@ class HistoryItemModel {
   final ProcessingType processingType;
   final DateTime date;
   final String? thumbnailPath;
+  final String? processedImagePath;
+  final String? pdfPath;
 
   Map<String, dynamic> toJson() => _$HistoryItemModelToJson(this);
 }

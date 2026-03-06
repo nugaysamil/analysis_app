@@ -16,14 +16,14 @@ class FaceResultView extends StatelessWidget {
         child: Column(
           children: [
             ResultAppBarWidget(
-              title: controller.pageTitle,
+              title: LocaleKeys.faceResult.tr,
               onBackTap: controller.onBackTap,
             ),
             Expanded(
               child: FaceResultComparisonWidget(controller: controller),
             ),
             ResultActionButtonWidget(
-              label: controller.actionButtonText,
+              label: LocaleKeys.done.tr,
               onTap: controller.onActionTap,
             ),
           ],

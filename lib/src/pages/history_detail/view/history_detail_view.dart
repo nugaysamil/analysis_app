@@ -18,7 +18,9 @@ class HistoryDetailView extends StatelessWidget {
         child: Column(
           children: [
             ResultAppBarWidget(
-              title: controller.pageTitle,
+              title: controller.isFace
+                  ? LocaleKeys.faceResult.tr
+                  : LocaleKeys.pdfCreated.tr,
               onBackTap: controller.onBackTap,
             ),
             Expanded(

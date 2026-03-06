@@ -2,40 +2,48 @@ import 'dart:io';
 
 import 'package:analysis_app/src/core/constants/string_constant.dart';
 import 'package:analysis_app/src/core/enum/processing_type.dart';
-import 'package:analysis_app/src/core/localization/locale_keys.dart';
 import 'package:analysis_app/src/pages/home/model/history_item_model.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:open_file/open_file.dart';
+import 'package:path_provider/path_provider.dart';
 
 // Manages History Detail screen state and metadata.
 class HistoryDetailViewModel extends GetxController {
-  // Retrieves navigation arguments as a typed model, null-safe.
-  HistoryItemModel? get args => Get.arguments as HistoryItemModel?;
+  bool isFace = false;
+  String imagePath = '';
+  String processedImagePath = '';
+  String pdfPath = '';
+  String formattedDate = '';
+  String fileSize = '-';
 
-  // Page title based on processing type.
-  String get pageTitle => args?.processingType == ProcessingType.face
-      ? LocaleKeys.faceResult.tr
-      : LocaleKeys.pdfCreated.tr;
+  @override
+  void onInit() {
+    super.onInit();
+    final args = Get.arguments as HistoryItemModel?;
+    if (args == null) {
+      Get.back<void>();
+      return;
+    }
+    _initFromArgs(args);
+  }
 
-  // Whether the item is a face processing result.
-  bool get isFace => args?.processingType == ProcessingType.face;
+  // Parses navigation arguments and populates local state.
+  void _initFromArgs(HistoryItemModel args) {
+    isFace = args.processingType == ProcessingType.face;
+    imagePath = args.thumbnailPath ?? '';
+    processedImagePath = args.processedImagePath ?? '';
+    pdfPath = args.pdfPath ?? '';
+    formattedDate = DateFormat(StringConstant.dateFormat).format(args.date);
+    fileSize = _calculateFileSize(
+      isFace ? processedImagePath : pdfPath,
+    );
+  }
 
-  // Original image path from the history item.
-  String get imagePath => args?.thumbnailPath ?? '';
-
-  // Formatted date for metadata display.
-  String get formattedDate =>
-      DateFormat(StringConstant.dateFormat).format(args?.date ?? DateTime.now());
-
-  // Processing type label for metadata display.
-  String get processingTypeLabel => isFace
-      ? LocaleKeys.faceProcessed.tr
-      : LocaleKeys.documentScan.tr;
-
-  // Calculates the file size from the image path.
-  String get fileSize {
-    if (imagePath.isEmpty) return '-';
-    final file = File(imagePath);
+  // Computes human-readable file size from the given path.
+  String _calculateFileSize(String path) {
+    if (path.isEmpty) return '-';
+    final file = File(path);
     if (!file.existsSync()) return '-';
     final bytes = file.lengthSync();
     if (bytes < 1024) return '$bytes B';
@@ -43,21 +51,20 @@ class HistoryDetailViewModel extends GetxController {
     return '${(bytes / (1024 * 1024)).toStringAsFixed(1)} MB';
   }
 
-  @override
-  void onInit() {
-    super.onInit();
-    if (args == null) {
-      Get.back<void>();
-    }
-  }
-
   // Navigates back to the home screen.
   void onBackTap() {
     Get.back<void>();
   }
 
-  // Opens the PDF in an external viewer (document flow only).
-  void onOpenPdfTap() {
-    // TODO(pdf): Implement external PDF viewer launch
+  // Copies PDF to temp dir and opens in external viewer.
+  Future<void> onOpenPdfTap() async {
+    if (pdfPath.isEmpty) return;
+    final file = File(pdfPath);
+    if (!await file.exists()) return;
+    final tempDir = await getTemporaryDirectory();
+    final tempPath =
+        '${tempDir.path}/document_${DateTime.now().millisecondsSinceEpoch}.pdf';
+    await file.copy(tempPath);
+    OpenFile.open(tempPath);
   }
 }

@@ -24,7 +24,7 @@ class HistoryDetailFaceContentWidget extends StatelessWidget {
           child: FaceResultImageCardWidget(
             label: LocaleKeys.after.tr,
             sublabel: LocaleKeys.blackAndWhite.tr,
-            imagePath: '',
+            imagePath: controller.processedImagePath,
           ),
         ),
       ],
