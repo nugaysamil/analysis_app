@@ -1,7 +1,7 @@
 import 'dart:developer';
 
-import 'package:analysis_app/src/common/pages/processing/model/processing_args_model.dart';
-import 'package:analysis_app/src/common/pages/result/model/result_args_model.dart';
+import 'package:analysis_app/src/pages/processing/model/processing_args_model.dart';
+import 'package:analysis_app/src/pages/result/model/result_args_model.dart';
 import 'package:analysis_app/src/core/cache/local_cache_service.dart';
 import 'package:analysis_app/src/core/enum/processing_type.dart';
 import 'package:analysis_app/src/core/localization/locale_keys.dart';

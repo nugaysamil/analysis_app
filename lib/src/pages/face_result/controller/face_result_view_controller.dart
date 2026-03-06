@@ -1,9 +1,9 @@
-import 'package:analysis_app/src/common/pages/result/controller/base_result_view_controller.dart';
-import 'package:analysis_app/src/common/pages/result/model/result_args_model.dart';
+import 'package:analysis_app/src/pages/result/controller/base_result_controller.dart';
+import 'package:analysis_app/src/pages/result/model/result_args_model.dart';
 import 'package:get/get.dart';
 
 // Manages Face Result screen state, extends the shared base.
-class FaceResultViewModel extends BaseResultViewModel {
+class FaceResultViewModel extends BaseResultController {
   String originalImagePath = '';
   String processedImagePath = '';
   int facesDetected = 0;

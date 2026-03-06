@@ -1,4 +1,4 @@
-import 'package:analysis_app/src/common/pages/processing/model/processing_args_model.dart';
+import 'package:analysis_app/src/pages/processing/model/processing_args_model.dart';
 import 'package:analysis_app/src/core/cache/local_cache_service.dart';
 import 'package:analysis_app/src/core/constants/string_constant.dart';
 import 'package:analysis_app/src/core/routes/app_routes.dart';

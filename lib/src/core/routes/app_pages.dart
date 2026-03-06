@@ -1,4 +1,4 @@
-import 'package:analysis_app/src/common/pages/processing/view/processing_view.dart';
+import 'package:analysis_app/src/pages/processing/view/processing_view.dart';
 import 'package:analysis_app/src/core/bindings/app_bindings.dart';
 import 'package:analysis_app/src/core/routes/app_routes.dart';
 import 'package:analysis_app/src/pages/face_result/view/face_result_view.dart';

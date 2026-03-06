@@ -1,4 +1,4 @@
-import 'package:analysis_app/src/common/pages/processing/controller/processing_view_controller.dart';
+import 'package:analysis_app/src/pages/processing/controller/processing_view_controller.dart';
 import 'package:analysis_app/src/core/exports/exports.dart';
 
 class ProcessingProgressWidget extends StatelessWidget {

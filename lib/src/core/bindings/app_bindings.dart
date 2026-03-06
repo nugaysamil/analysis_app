@@ -1,4 +1,4 @@
-import 'package:analysis_app/src/common/pages/processing/controller/processing_view_controller.dart';
+import 'package:analysis_app/src/pages/processing/controller/processing_view_controller.dart';
 import 'package:analysis_app/src/pages/face_result/controller/face_result_view_controller.dart';
 import 'package:analysis_app/src/pages/history_detail/controller/history_detail_view_controller.dart';
 import 'package:analysis_app/src/pages/home/controller/home_view_controller.dart';

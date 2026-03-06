@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 
 // Abstract base for all result page controllers.
-abstract class BaseResultViewModel extends GetxController {
+abstract class BaseResultController extends GetxController {
   // Called when the bottom action button is tapped.
   void onActionTap();
 

@@ -1,5 +1,5 @@
-import 'package:analysis_app/src/common/pages/result/widgets/result_action_button_widget.dart';
-import 'package:analysis_app/src/common/pages/result/widgets/result_app_bar_widget.dart';
+import 'package:analysis_app/src/pages/result/widgets/result_action_button_widget.dart';
+import 'package:analysis_app/src/pages/result/widgets/result_app_bar_widget.dart';
 import 'package:analysis_app/src/core/exports/exports.dart';
 import 'package:analysis_app/src/pages/pdf_result/controller/pdf_result_view_controller.dart';
 import 'package:analysis_app/src/pages/pdf_result/widgets/pdf_result_preview_widget.dart';

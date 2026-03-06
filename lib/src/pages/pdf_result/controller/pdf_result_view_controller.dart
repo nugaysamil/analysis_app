@@ -1,13 +1,13 @@
 import 'dart:io';
 
-import 'package:analysis_app/src/common/pages/result/controller/base_result_view_controller.dart';
-import 'package:analysis_app/src/common/pages/result/model/result_args_model.dart';
+import 'package:analysis_app/src/pages/result/controller/base_result_controller.dart';
+import 'package:analysis_app/src/pages/result/model/result_args_model.dart';
 import 'package:get/get.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 
 // Manages PDF Result screen state, extends the shared base.
-class PdfResultViewModel extends BaseResultViewModel {
+class PdfResultViewModel extends BaseResultController {
   String pdfPath = '';
   String originalImagePath = '';
 
