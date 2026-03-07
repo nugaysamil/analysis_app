@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:analysis_app/src/core/constants/string_constant.dart';
+import 'package:analysis_app/src/core/error/app_error_handler.dart';
 import 'package:analysis_app/src/pages/result/controller/base_result_controller.dart';
 import 'package:analysis_app/src/pages/result/model/result_args_model.dart';
 import 'package:get/get.dart';
@@ -30,14 +32,18 @@ class PdfResultViewModel extends BaseResultController {
 
   // Copies PDF to temp dir and opens in external viewer (fixes iOS sandbox access).
   @override
-  void onActionTap() async {
-    if (pdfPath.isEmpty) return;
-    final file = File(pdfPath);
-    if (!await file.exists()) return;
-    final tempDir = await getTemporaryDirectory();
-    final tempPath =
-        '${tempDir.path}/document_${DateTime.now().millisecondsSinceEpoch}.pdf';
-    await file.copy(tempPath);
-    OpenFile.open(tempPath);
+  Future<void> onActionTap() async {
+    try {
+      if (pdfPath.isEmpty) return;
+      final file = File(pdfPath);
+      if (!await file.exists()) return;
+      final tempDir = await getTemporaryDirectory();
+      final tempPath =
+          '${tempDir.path}/document_${DateTime.now().millisecondsSinceEpoch}.pdf';
+      await file.copy(tempPath);
+      OpenFile.open(tempPath);
+    } catch (e, stack) {
+      AppErrorHandler.log(StringConstant.tagPdfResultViewModel, e, stack);
+    }
   }
 }

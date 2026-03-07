@@ -1,9 +1,9 @@
-import 'dart:developer';
-
+import 'package:analysis_app/src/core/cache/local_cache_service.dart';
+import 'package:analysis_app/src/core/constants/string_constant.dart';
 import 'package:analysis_app/src/pages/processing/model/processing_args_model.dart';
 import 'package:analysis_app/src/pages/result/model/result_args_model.dart';
-import 'package:analysis_app/src/core/cache/local_cache_service.dart';
 import 'package:analysis_app/src/core/enum/processing_type.dart';
+import 'package:analysis_app/src/core/error/app_error_handler.dart';
 import 'package:analysis_app/src/core/localization/locale_keys.dart';
 import 'package:analysis_app/src/core/routes/app_routes.dart';
 import 'package:analysis_app/src/core/services/document_processing_service.dart';
@@ -39,8 +39,8 @@ class ProcessingViewModel extends GetxController {
       } else {
         await _processDocument();
       }
-    } catch (e) {
-      log('Processing failed: $e', name: 'ProcessingViewModel');
+    } catch (e, stack) {
+      AppErrorHandler.log(StringConstant.tagProcessingViewModel, e, stack);
       hasError.value = true;
       errorMessage.value = e.toString();
       stepDescription.value = LocaleKeys.processingError.tr;
@@ -58,10 +58,7 @@ class ProcessingViewModel extends GetxController {
       onProgress: (p) => progress.value = p,
     );
 
-    await _saveToHistory(
-      processedImagePath: result.processedPath,
-    );
-
+    await _saveToHistory(processedImagePath: result.processedPath);
     _navigateToResult(processedImagePath: result.processedPath);
   }
 
@@ -77,7 +74,6 @@ class ProcessingViewModel extends GetxController {
       processedImagePath: result.processedImagePath,
       pdfPath: result.pdfPath,
     );
-
     _navigateToResult(
       processedImagePath: result.processedImagePath,
       pdfPath: result.pdfPath,

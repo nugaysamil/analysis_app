@@ -13,19 +13,19 @@ class ImageProcessingHelper {
   // Reads the file bytes, decodes to an img.Image instance,
   // and applies EXIF orientation so pixel data matches the visual orientation.
   static Future<img.Image> loadImage(String imagePath) async {
-    final bytes = await File(imagePath).readAsBytes();
-    final decoded = img.decodeImage(bytes);
+        final bytes = await File(imagePath).readAsBytes();
+        final decoded = img.decodeImage(bytes);
     if (decoded == null) throw Exception('Failed to decode image');
-    return img.bakeOrientation(decoded);
+        return img.bakeOrientation(decoded);
   }
 
   // Saves the baked (EXIF-corrected) image to a temp file so ML Kit
   // reads pixel data in the same orientation as the decoded image.
   static Future<String> saveTempBaked(img.Image image) async {
-    final dir = await getApplicationDocumentsDirectory();
-    final path = '${dir.path}/temp_baked.jpg';
-    await File(path).writeAsBytes(img.encodeJpg(image, quality: 95));
-    return path;
+        final dir = await getApplicationDocumentsDirectory();
+        final path = '${dir.path}/temp_baked.jpg';
+        await File(path).writeAsBytes(img.encodeJpg(image, quality: 95));
+        return path;
   }
 
   // Encodes the image as JPEG and saves to the app documents directory.
@@ -34,16 +34,16 @@ class ImageProcessingHelper {
     required String prefix,
     int quality = 90,
   }) async {
-    final dir = await getApplicationDocumentsDirectory();
-    final timestamp = DateTime.now().millisecondsSinceEpoch;
-    final path = '${dir.path}/${prefix}_$timestamp.jpg';
-    await File(path).writeAsBytes(img.encodeJpg(image, quality: quality));
-    return path;
+        final dir = await getApplicationDocumentsDirectory();
+        final timestamp = DateTime.now().millisecondsSinceEpoch;
+        final path = '${dir.path}/${prefix}_$timestamp.jpg';
+        await File(path).writeAsBytes(img.encodeJpg(image, quality: quality));
+        return path;
   }
 
   // Returns the app documents directory path.
   static Future<String> getOutputDirectory() async {
-    final dir = await getApplicationDocumentsDirectory();
-    return dir.path;
+        final dir = await getApplicationDocumentsDirectory();
+        return dir.path;
   }
 }

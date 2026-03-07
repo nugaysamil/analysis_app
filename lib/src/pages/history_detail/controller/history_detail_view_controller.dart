@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:analysis_app/src/core/constants/string_constant.dart';
 import 'package:analysis_app/src/core/enum/processing_type.dart';
+import 'package:analysis_app/src/core/error/app_error_handler.dart';
 import 'package:analysis_app/src/pages/home/model/history_item_model.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -43,12 +44,19 @@ class HistoryDetailViewModel extends GetxController {
   // Computes human-readable file size from the given path.
   String _calculateFileSize(String path) {
     if (path.isEmpty) return '-';
-    final file = File(path);
-    if (!file.existsSync()) return '-';
-    final bytes = file.lengthSync();
-    if (bytes < 1024) return '$bytes B';
-    if (bytes < 1024 * 1024) return '${(bytes / 1024).toStringAsFixed(1)} KB';
-    return '${(bytes / (1024 * 1024)).toStringAsFixed(1)} MB';
+    try {
+      final file = File(path);
+      if (!file.existsSync()) return '-';
+      final bytes = file.lengthSync();
+      if (bytes < 1024) return '$bytes B';
+      if (bytes < 1024 * 1024) {
+        return '${(bytes / 1024).toStringAsFixed(1)} KB';
+      }
+      return '${(bytes / (1024 * 1024)).toStringAsFixed(1)} MB';
+    } catch (e, stack) {
+      AppErrorHandler.log(StringConstant.tagHistoryDetailViewModel, e, stack);
+      return '-';
+    }
   }
 
   // Navigates back to the home screen.
@@ -58,13 +66,17 @@ class HistoryDetailViewModel extends GetxController {
 
   // Copies PDF to temp dir and opens in external viewer.
   Future<void> onOpenPdfTap() async {
-    if (pdfPath.isEmpty) return;
-    final file = File(pdfPath);
-    if (!await file.exists()) return;
-    final tempDir = await getTemporaryDirectory();
-    final tempPath =
-        '${tempDir.path}/document_${DateTime.now().millisecondsSinceEpoch}.pdf';
-    await file.copy(tempPath);
-    OpenFile.open(tempPath);
+    try {
+      if (pdfPath.isEmpty) return;
+      final file = File(pdfPath);
+      if (!await file.exists()) return;
+      final tempDir = await getTemporaryDirectory();
+      final tempPath =
+          '${tempDir.path}/document_${DateTime.now().millisecondsSinceEpoch}.pdf';
+      await file.copy(tempPath);
+      OpenFile.open(tempPath);
+    } catch (e, stack) {
+      AppErrorHandler.log(StringConstant.tagHistoryDetailViewModel, e, stack);
+    }
   }
 }

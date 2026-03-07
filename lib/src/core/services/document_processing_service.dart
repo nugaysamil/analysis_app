@@ -1,6 +1,8 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:analysis_app/src/core/constants/string_constant.dart';
+import 'package:analysis_app/src/core/error/app_error_handler.dart';
 import 'package:analysis_app/src/core/services/base/base_processing_service.dart';
 import 'package:analysis_app/src/core/services/base/image_processing_helper.dart';
 import 'package:analysis_app/src/core/services/model/document_processing_result_model.dart';
@@ -26,57 +28,57 @@ class DocumentProcessingService
     String imagePath, {
     ProgressCallback? onProgress,
   }) async {
-    // Load, decode and apply EXIF orientation correction.
-    onProgress?.call(0.1);
-    final original = await ImageProcessingHelper.loadImage(imagePath);
+        // Load, decode and apply EXIF orientation correction.
+        onProgress?.call(0.1);
+        final original = await ImageProcessingHelper.loadImage(imagePath);
 
-    // Prepare OCR-optimized image: grayscale + sharpen + high contrast
-    // so ML Kit reads characters more accurately.
-    onProgress?.call(0.15);
-    final ocrImage = _prepareForOcr(original);
-    final ocrPath = await ImageProcessingHelper.saveTempBaked(ocrImage);
+        // Prepare OCR-optimized image: grayscale + sharpen + high contrast
+        // so ML Kit reads characters more accurately.
+        onProgress?.call(0.15);
+        final ocrImage = _prepareForOcr(original);
+        final ocrPath = await ImageProcessingHelper.saveTempBaked(ocrImage);
 
-    // Run ML Kit text recognition (OCR) on the optimized image.
-    onProgress?.call(0.3);
-    final inputImage = InputImage.fromFilePath(ocrPath);
-    final recognizedText = await _textRecognizer.processImage(inputImage);
+        // Run ML Kit text recognition (OCR) on the optimized image.
+        onProgress?.call(0.3);
+        final inputImage = InputImage.fromFilePath(ocrPath);
+        final recognizedText = await _textRecognizer.processImage(inputImage);
 
-    // Detect document boundaries from text blocks and crop.
-    onProgress?.call(0.4);
-    final cropped = _detectAndCropDocument(original, recognizedText);
+        // Detect document boundaries from text blocks and crop.
+        onProgress?.call(0.4);
+        final cropped = _detectAndCropDocument(original, recognizedText);
 
-    // Enhance contrast and brightness for better readability.
-    onProgress?.call(0.6);
-    final enhanced = _enhanceContrast(cropped);
+        // Enhance contrast and brightness for better readability.
+        onProgress?.call(0.6);
+        final enhanced = _enhanceContrast(cropped);
 
-    // Encode and save the processed image as JPEG.
-    onProgress?.call(0.75);
-    final processedPath = await ImageProcessingHelper.saveImage(
-      enhanced,
-      prefix: 'doc_processed',
-      quality: 95,
-    );
+        // Encode and save the processed image as JPEG.
+        onProgress?.call(0.75);
+        final processedPath = await ImageProcessingHelper.saveImage(
+          enhanced,
+          prefix: 'doc_processed',
+          quality: 95,
+        );
 
-    // Generate a PDF containing the processed image and recognized text.
-    onProgress?.call(0.9);
-    final dirPath = await ImageProcessingHelper.getOutputDirectory();
-    final timestamp = DateTime.now().millisecondsSinceEpoch;
-    final normalizedText = _normalizeOcrText(recognizedText.text);
-    final pdfPath = await _generatePdf(
-      processedPath,
-      normalizedText,
-      dirPath,
-      timestamp,
-    );
+        // Generate a PDF containing the processed image and recognized text.
+        onProgress?.call(0.9);
+        final dirPath = await ImageProcessingHelper.getOutputDirectory();
+        final timestamp = DateTime.now().millisecondsSinceEpoch;
+        final normalizedText = _normalizeOcrText(recognizedText.text);
+        final pdfPath = await _generatePdf(
+          processedPath,
+          normalizedText,
+          dirPath,
+          timestamp,
+        );
 
     // Processing complete.
-    onProgress?.call(1.0);
+        onProgress?.call(1.0);
 
-    return DocumentProcessingResultModel(
-      originalPath: imagePath,
-      processedImagePath: processedPath,
-      pdfPath: pdfPath,
-      recognizedText: recognizedText.text,
+        return DocumentProcessingResultModel(
+          originalPath: imagePath,
+          processedImagePath: processedPath,
+          pdfPath: pdfPath,
+          recognizedText: recognizedText.text,
     );
   }
 
@@ -155,14 +157,13 @@ class DocumentProcessingService
     try {
       final font = await PdfGoogleFonts.robotoRegular();
       textStyle = pw.TextStyle(font: font, fontSize: 12);
-    } catch (_) {
-      // Use default font if Google Font fails.
+    } catch (e, stack) {
+      AppErrorHandler.log(StringConstant.tagDocumentProcessingService, e, stack);
     }
 
     // Page 2+: OCR text as paragraphs.
     if (text.isNotEmpty) {
       try {
-        // Split by double newline (paragraphs), then by length.
         const maxChunkLength = 400;
         final paragraphs = text.split(RegExp(r'\n\n+'));
         final textWidgets = <pw.Widget>[];
@@ -195,8 +196,8 @@ class DocumentProcessingService
             ),
           );
         }
-      } catch (_) {
-        // Skip text if rendering fails.
+      } catch (e, stack) {
+        AppErrorHandler.log(StringConstant.tagDocumentProcessingService, e, stack);
       }
     }
 
@@ -206,7 +207,7 @@ class DocumentProcessingService
     log(
       'PDF written: $pdfPath, size: ${bytes.length} bytes, '
       'image: ${imageBytes.length} bytes, text length: ${text.length}',
-      name: 'DocumentProcessing',
+      name: StringConstant.tagDocumentProcessingService,
     );
     return pdfPath;
   }
