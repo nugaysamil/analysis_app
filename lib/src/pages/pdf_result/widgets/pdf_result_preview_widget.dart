@@ -5,7 +5,7 @@ import 'package:analysis_app/src/pages/pdf_result/widgets/pdf_result_icon_widget
 class PdfResultPreviewWidget extends StatelessWidget {
   const PdfResultPreviewWidget({super.key, required this.controller});
 
-  final PdfResultViewModel controller;
+  final PdfResultViewController controller;
 
   @override
   Widget build(BuildContext context) {

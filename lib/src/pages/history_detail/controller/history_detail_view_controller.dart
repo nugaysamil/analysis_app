@@ -10,7 +10,7 @@ import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 
 // Manages History Detail screen state and metadata.
-class HistoryDetailViewModel extends GetxController {
+class HistoryDetailViewController extends GetxController {
   bool isFace = false;
   String imagePath = '';
   String processedImagePath = '';

@@ -9,7 +9,7 @@ class PdfResultView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<PdfResultViewModel>();
+    final controller = Get.find<PdfResultViewController>();
     return Scaffold(
       backgroundColor: ColorConstant.scaffoldBackground,
       body: SafeArea(

@@ -44,4 +44,5 @@ class LocaleKeys {
   // Processing
   static const String processingError = 'processing_error';
   static const String detectingContent = 'detecting_content';
+  static const String goBack = 'go_back';
 }

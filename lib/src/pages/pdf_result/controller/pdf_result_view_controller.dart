@@ -9,7 +9,7 @@ import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 
 // Manages PDF Result screen state, extends the shared base.
-class PdfResultViewModel extends BaseResultController {
+class PdfResultViewController extends BaseResultController {
   String pdfPath = '';
   String originalImagePath = '';
 

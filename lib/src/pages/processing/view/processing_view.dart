@@ -8,7 +8,7 @@ class ProcessingView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<ProcessingViewModel>();
+    final controller = Get.find<ProgressingViewController>();
     return Scaffold(
       backgroundColor: ColorConstant.scaffoldBackground,
       body: SafeArea(

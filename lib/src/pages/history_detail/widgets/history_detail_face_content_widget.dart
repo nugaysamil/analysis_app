@@ -5,7 +5,7 @@ import 'package:analysis_app/src/pages/history_detail/controller/history_detail_
 class HistoryDetailFaceContentWidget extends StatelessWidget {
   const HistoryDetailFaceContentWidget({super.key, required this.controller});
 
-  final HistoryDetailViewModel controller;
+  final HistoryDetailViewController controller;
 
   @override
   Widget build(BuildContext context) {

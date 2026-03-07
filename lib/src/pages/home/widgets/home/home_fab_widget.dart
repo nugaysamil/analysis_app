@@ -4,7 +4,7 @@ import 'package:analysis_app/src/core/exports/exports.dart';
 class HomeFabWidget extends StatelessWidget {
   const HomeFabWidget({super.key, required this.controller});
 
-  final HomeViewModel controller;
+  final HomeViewController controller;
 
   @override
   Widget build(BuildContext context) {

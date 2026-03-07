@@ -41,6 +41,7 @@ class AppTranslations extends Translations {
     'file_size': 'File Size',
     'processing_error': 'Processing Failed',
     'detecting_content': 'Detecting content...',
+    'go_back': 'Go Back',
   };
 
   static const Map<String, String> _trTR = {
@@ -71,5 +72,6 @@ class AppTranslations extends Translations {
     'file_size': 'Dosya Boyutu',
     'processing_error': 'İşlem Başarısız',
     'detecting_content': 'İçerik tespit ediliyor...',
+    'go_back': 'Geri Dön',
   };
 }

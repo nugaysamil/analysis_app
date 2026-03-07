@@ -11,7 +11,7 @@ class HistoryDetailView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<HistoryDetailViewModel>();
+    final controller = Get.find<HistoryDetailViewController>();
     return Scaffold(
       backgroundColor: ColorConstant.scaffoldBackground,
       body: SafeArea(

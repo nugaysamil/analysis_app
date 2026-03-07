@@ -11,7 +11,7 @@ class HistoryCardInfoWidget extends StatelessWidget {
     required this.item,
   });
 
-  final HomeViewModel controller;
+  final HomeViewController controller;
   final HistoryItemModel item;
 
   @override

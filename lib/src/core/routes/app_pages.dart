@@ -23,19 +23,16 @@ class AppPages {
       name: AppRoutes.processing,
       page: ProcessingView.new,
       binding: AppBindings.processing(),
-      transition: Transition.noTransition,
     ),
     GetPage<dynamic>(
       name: AppRoutes.faceResult,
       page: FaceResultView.new,
       binding: AppBindings.faceResult(),
-      transition: Transition.noTransition,
     ),
     GetPage<dynamic>(
       name: AppRoutes.pdfResult,
       page: PdfResultView.new,
       binding: AppBindings.pdfResult(),
-      transition: Transition.noTransition,
     ),
     GetPage<dynamic>(
       name: AppRoutes.historyDetail,

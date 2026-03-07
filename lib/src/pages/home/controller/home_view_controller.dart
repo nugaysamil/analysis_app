@@ -3,7 +3,6 @@ import 'package:analysis_app/src/core/cache/local_cache_service.dart';
 import 'package:analysis_app/src/core/constants/string_constant.dart';
 import 'package:analysis_app/src/core/error/app_error_handler.dart';
 import 'package:analysis_app/src/core/routes/app_routes.dart';
-import 'package:analysis_app/src/core/services/content_detection_service.dart';
 import 'package:analysis_app/src/pages/home/model/history_item_model.dart';
 import 'package:analysis_app/src/pages/home/widgets/choose_source/choose_source_dialog_widget.dart';
 import 'package:flutter/material.dart';
@@ -12,9 +11,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
 // Manages home screen state: history list, image picking, navigation.
-class HomeViewModel extends GetxController {
+class HomeViewController extends GetxController {
   final RxList<HistoryItemModel> historyItems = <HistoryItemModel>[].obs;
-  final RxBool isDetecting = false.obs;
   final ImagePicker _picker = ImagePicker();
 
   @override
@@ -56,33 +54,21 @@ class HomeViewModel extends GetxController {
     }
   }
 
-  // Picks an image, auto-detects content type, navigates to processing,
-  // then refreshes history list from cache on return.
+  // Picks an image and navigates to processing immediately.
+  // Content detection happens on the processing screen.
   Future<void> _pickImage(ImageSource source) async {
     try {
       final file = await _picker.pickImage(source: source);
       if (file == null) return;
 
-      final path = file.path;
-
-      // Auto-detect content type using ML Kit.
-      isDetecting.value = true;
-      final processingType =
-          await ContentDetectionService.instance.detect(path);
-      isDetecting.value = false;
-
       await Get.toNamed<void>(
         AppRoutes.processing,
-        arguments: ProcessingArgsModel(
-          imagePath: path,
-          processingType: processingType,
-        ),
+        arguments: ProcessingArgsModel(imagePath: file.path),
       );
 
       // Refresh history from cache after returning from the processing flow.
       _loadHistory();
     } catch (e, stack) {
-      isDetecting.value = false;
       AppErrorHandler.log(StringConstant.tagHomeViewModel, e, stack);
     }
   }

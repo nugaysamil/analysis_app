@@ -9,7 +9,7 @@ class FaceResultView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<FaceResultViewModel>();
+    final controller = Get.find<FaceResultViewController>();
     return Scaffold(
       backgroundColor: ColorConstant.scaffoldBackground,
       body: SafeArea(

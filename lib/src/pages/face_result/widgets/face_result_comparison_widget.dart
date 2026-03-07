@@ -5,7 +5,7 @@ import 'package:analysis_app/src/pages/face_result/widgets/face_result_image_car
 class FaceResultComparisonWidget extends StatelessWidget {
   const FaceResultComparisonWidget({super.key, required this.controller});
 
-  final FaceResultViewModel controller;
+  final FaceResultViewController controller;
 
   @override
   Widget build(BuildContext context) {

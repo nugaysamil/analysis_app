@@ -5,7 +5,7 @@ import 'package:analysis_app/src/pages/home/widgets/history/history_card_widget.
 class HistoryListWidget extends StatelessWidget {
   const HistoryListWidget({super.key, required this.controller});
 
-  final HomeViewModel controller;
+  final HomeViewController controller;
 
   @override
   Widget build(BuildContext context) {

@@ -7,14 +7,14 @@ part 'processing_args_model.g.dart';
 class ProcessingArgsModel {
   const ProcessingArgsModel({
     required this.imagePath,
-    required this.processingType,
+    this.processingType,
   });
 
   factory ProcessingArgsModel.fromJson(Map<String, dynamic> json) =>
       _$ProcessingArgsModelFromJson(json);
 
   final String imagePath;
-  final ProcessingType processingType;
+  final ProcessingType? processingType;
 
   Map<String, dynamic> toJson() => _$ProcessingArgsModelToJson(this);
 }

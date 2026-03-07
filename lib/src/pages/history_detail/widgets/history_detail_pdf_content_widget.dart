@@ -5,7 +5,7 @@ import 'package:analysis_app/src/pages/pdf_result/widgets/pdf_result_icon_widget
 class HistoryDetailPdfContentWidget extends StatelessWidget {
   const HistoryDetailPdfContentWidget({super.key, required this.controller});
 
-  final HistoryDetailViewModel controller;
+  final HistoryDetailViewController controller;
 
   @override
   Widget build(BuildContext context) {

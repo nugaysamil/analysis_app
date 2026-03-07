@@ -12,35 +12,35 @@ class AppBindings {
   // Home page dependencies.
   static BindingsBuilder<dynamic> home() {
     return BindingsBuilder(() {
-      Get.lazyPut<HomeViewModel>(HomeViewModel.new);
+      Get.lazyPut<HomeViewController>(HomeViewController.new);
     });
   }
 
   // Processing page dependencies.
   static BindingsBuilder<dynamic> processing() {
     return BindingsBuilder(() {
-      Get.lazyPut<ProcessingViewModel>(ProcessingViewModel.new);
+      Get.lazyPut<ProgressingViewController>(ProgressingViewController.new);
     });
   }
 
   // Face result page dependencies.
   static BindingsBuilder<dynamic> faceResult() {
     return BindingsBuilder(() {
-      Get.lazyPut<FaceResultViewModel>(FaceResultViewModel.new);
+      Get.lazyPut<FaceResultViewController>(FaceResultViewController.new);
     });
   }
 
   // PDF result page dependencies.
   static BindingsBuilder<dynamic> pdfResult() {
     return BindingsBuilder(() {
-      Get.lazyPut<PdfResultViewModel>(PdfResultViewModel.new);
+      Get.lazyPut<PdfResultViewController>(PdfResultViewController.new);
     });
   }
 
   // History detail page dependencies.
   static BindingsBuilder<dynamic> historyDetail() {
     return BindingsBuilder(() {
-      Get.lazyPut<HistoryDetailViewModel>(HistoryDetailViewModel.new);
+      Get.lazyPut<HistoryDetailViewController>(HistoryDetailViewController.new);
     });
   }
 }
