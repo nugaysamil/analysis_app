@@ -4,12 +4,11 @@ import 'package:analysis_app/src/core/exports/exports.dart';
 import 'package:analysis_app/src/pages/face_result/controller/face_result_view_controller.dart';
 import 'package:analysis_app/src/pages/face_result/widgets/face_result_comparison_widget.dart';
 
-class FaceResultView extends StatelessWidget {
+class FaceResultView extends GetView<FaceResultViewController> {
   const FaceResultView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<FaceResultViewController>();
     return Scaffold(
       backgroundColor: ColorConstant.scaffoldBackground,
       body: SafeArea(

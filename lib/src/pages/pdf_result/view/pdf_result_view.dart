@@ -4,12 +4,11 @@ import 'package:analysis_app/src/core/exports/exports.dart';
 import 'package:analysis_app/src/pages/pdf_result/controller/pdf_result_view_controller.dart';
 import 'package:analysis_app/src/pages/pdf_result/widgets/pdf_result_preview_widget.dart';
 
-class PdfResultView extends StatelessWidget {
+class PdfResultView extends GetView<PdfResultViewController> {
   const PdfResultView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<PdfResultViewController>();
     return Scaffold(
       backgroundColor: ColorConstant.scaffoldBackground,
       body: SafeArea(

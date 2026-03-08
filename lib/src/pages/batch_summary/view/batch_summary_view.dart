@@ -3,12 +3,11 @@ import 'package:analysis_app/src/pages/batch_summary/controller/batch_summary_co
 import 'package:analysis_app/src/pages/batch_summary/widgets/batch_summary_header_widget.dart';
 import 'package:analysis_app/src/pages/batch_summary/widgets/batch_summary_list_widget.dart';
 
-class BatchSummaryView extends StatelessWidget {
+class BatchSummaryView extends GetView<BatchSummaryController> {
   const BatchSummaryView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<BatchSummaryController>();
     return Scaffold(
       backgroundColor: ColorConstant.scaffoldBackground,
       body: SafeArea(

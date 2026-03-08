@@ -3,12 +3,11 @@ import 'package:analysis_app/src/pages/processing/controller/processing_view_con
 import 'package:analysis_app/src/pages/processing/widgets/processing_image_widget.dart';
 import 'package:analysis_app/src/pages/processing/widgets/processing_progress_widget.dart';
 
-class ProcessingView extends StatelessWidget {
+class ProcessingView extends GetView<ProgressingViewController> {
   const ProcessingView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<ProgressingViewController>();
     return Scaffold(
       backgroundColor: ColorConstant.scaffoldBackground,
       body: SafeArea(

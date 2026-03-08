@@ -6,7 +6,6 @@ import 'package:get/get.dart';
 class FaceResultViewController extends BaseResultController {
   String originalImagePath = '';
   String processedImagePath = '';
-  int facesDetected = 0;
 
   @override
   void onInit() {

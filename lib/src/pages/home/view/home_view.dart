@@ -4,12 +4,11 @@ import 'package:analysis_app/src/pages/home/widgets/home/home_app_bar_widget.dar
 import 'package:analysis_app/src/pages/home/widgets/home/home_fab_widget.dart';
 import 'package:analysis_app/src/core/exports/exports.dart';
 
-class HomeView extends StatelessWidget {
+class HomeView extends GetView<HomeViewController> {
   const HomeView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<HomeViewController>();
     return Scaffold(
       backgroundColor: ColorConstant.scaffoldBackground,
       body: SafeArea(

@@ -3,12 +3,11 @@ import 'package:analysis_app/src/pages/batch_processing/controller/batch_process
 import 'package:analysis_app/src/pages/batch_processing/widgets/batch_progress_widget.dart';
 import 'package:analysis_app/src/pages/batch_processing/widgets/batch_thumbnail_grid_widget.dart';
 
-class BatchProcessingView extends StatelessWidget {
+class BatchProcessingView extends GetView<BatchProcessingController> {
   const BatchProcessingView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<BatchProcessingController>();
     return Scaffold(
       backgroundColor: ColorConstant.scaffoldBackground,
       body: SafeArea(

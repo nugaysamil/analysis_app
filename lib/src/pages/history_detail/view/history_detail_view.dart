@@ -6,12 +6,11 @@ import 'package:analysis_app/src/pages/history_detail/widgets/history_detail_fac
 import 'package:analysis_app/src/pages/history_detail/widgets/history_detail_metadata_widget.dart';
 import 'package:analysis_app/src/pages/history_detail/widgets/history_detail_pdf_content_widget.dart';
 
-class HistoryDetailView extends StatelessWidget {
+class HistoryDetailView extends GetView<HistoryDetailViewController> {
   const HistoryDetailView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<HistoryDetailViewController>();
     return Scaffold(
       backgroundColor: ColorConstant.scaffoldBackground,
       body: SafeArea(
