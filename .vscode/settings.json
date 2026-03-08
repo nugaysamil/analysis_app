@@ -1,8 +1,0 @@
-{
-  // Pin Flutter SDK so Cursor/Dart extension always finds the correct installation.
-  "dart.flutterSdkPath": "/Users/samilnugay/development/flutter",
-  // Optional: helps some setups that rely on the Dart SDK path directly.
-  "dart.sdkPath": "/Users/samilnugay/development/flutter/bin/cache/dart-sdk",
-  // Keeps analysis stable inside large workspaces.
-  "dart.analysisExcludedFolders": ["build", ".dart_tool"]
-}
