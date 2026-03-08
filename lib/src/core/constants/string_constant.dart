@@ -5,6 +5,7 @@ class StringConstant {
   static const String appTitle = 'ImageFlow';
   static const String dateFormat = 'MMM dd, yyyy';
   static const String pdf = 'PDF';
+  static const String docProcessedPrefix = 'doc_processed';
   static const String robotoRegularFontUrl =
       'https://fonts.gstatic.com/s/roboto/v30/KFOmCnqEu92Fr1Mu4mxP.ttf';
 

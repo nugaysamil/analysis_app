@@ -43,7 +43,22 @@ class DocumentProcessingService
     // Run ML Kit text recognition (OCR) on the optimized image.
     onProgress?.call(0.3);
     final inputImage = InputImage.fromFilePath(ocrPath);
-    final recognizedText = await _textRecognizer.processImage(inputImage);
+    var recognizedText = await _textRecognizer.processImage(inputImage);
+
+    // Fallback: if the aggressively pre-processed image produced no text
+    // (common with gallery images — screenshots, digital docs — where high
+    // contrast/sharpen hurts readability), retry OCR on the orientation-
+    // corrected original without any preprocessing.
+    if (recognizedText.text.trim().isEmpty) {
+      final fallbackPath =
+          '${await ImageProcessingHelper.getOutputDirectory()}/temp_ocr_orig.jpg';
+      await File(
+        fallbackPath,
+      ).writeAsBytes(img.encodeJpg(original, quality: 95));
+      recognizedText = await _textRecognizer.processImage(
+        InputImage.fromFilePath(fallbackPath),
+      );
+    }
 
     // Detect document boundaries from text blocks and crop.
     onProgress?.call(0.4);

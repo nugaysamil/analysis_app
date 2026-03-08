@@ -31,44 +31,6 @@ class _BatchProgressWidgetState extends State<BatchProgressWidget>
             textAlign: TextAlign.center,
           ),
         ),
-        SizedBox(height: 20.h),
-        AnimatedBuilder(
-          animation: animController,
-          builder: (context, _) {
-            return ClipRRect(
-              borderRadius: BorderRadius.circular(4.r),
-              child: LinearProgressIndicator(
-                value: progressAnim.value.clamp(0.0, 1.0),
-                backgroundColor: ColorConstant.progressTrack,
-                valueColor: const AlwaysStoppedAnimation<Color>(
-                  ColorConstant.primaryPink,
-                ),
-                minHeight: 6.h,
-              ),
-            );
-          },
-        ),
-        SizedBox(height: 12.h),
-        Obx(
-          () => Text(
-            '${(widget.controller.overallProgress * 100).toInt()}%',
-            style: TextStyle(
-              color: ColorConstant.textGrey,
-              fontSize: 14.sp,
-            ),
-            textAlign: TextAlign.center,
-          ),
-        ),
-        SizedBox(height: 8.h),
-        Obx(
-          () => Text(
-            '${widget.controller.results.length} / ${widget.controller.totalImages}',
-            style: TextStyle(
-              color: ColorConstant.textGrey,
-              fontSize: 13.sp,
-            ),
-          ),
-        ),
       ],
     );
   }

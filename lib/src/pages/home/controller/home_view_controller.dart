@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:analysis_app/src/pages/processing/model/processing_args_model.dart';
 import 'package:analysis_app/src/core/cache/local_cache_service.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:analysis_app/src/core/constants/string_constant.dart';
 import 'package:analysis_app/src/core/error/app_error_handler.dart';
 import 'package:analysis_app/src/core/routes/app_routes.dart';
@@ -77,13 +80,25 @@ class HomeViewController extends GetxController {
     }
   }
 
+  // Copies a temp file to the app documents directory so it survives
+  // OS cleanup of the image_picker /tmp cache.
+  Future<String> _copyToDocuments(String sourcePath, int index) async {
+    final dir = await getApplicationDocumentsDirectory();
+    final timestamp = DateTime.now().millisecondsSinceEpoch;
+    final dest = '${dir.path}/batch_src_${timestamp}_$index.jpg';
+    await File(sourcePath).copy(dest);
+    return dest;
+  }
+
   // Picks multiple images from gallery and navigates to batch processing.
   Future<void> pickMultipleImages() async {
     try {
       final files = await _picker.pickMultiImage();
       if (files.isEmpty) return;
 
-      final paths = files.map((f) => f.path).toList();
+      final paths = await Future.wait(
+        files.indexed.map((e) => _copyToDocuments(e.$2.path, e.$1)),
+      );
 
       await Get.toNamed<void>(AppRoutes.batchProcessing, arguments: paths);
 

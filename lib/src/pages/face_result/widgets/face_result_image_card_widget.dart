@@ -17,6 +17,7 @@ class FaceResultImageCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: 250.h,
       padding: EdgeInsets.all(12.r),
       decoration: BoxDecoration(
         color: ColorConstant.cardBackground,
@@ -46,7 +47,17 @@ class FaceResultImageCardWidget extends StatelessWidget {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(12.r),
                 child: imagePath.isNotEmpty
-                    ? Image.file(File(imagePath), fit: BoxFit.cover)
+                    ? Image.file(
+                        File(imagePath),
+                        fit: BoxFit.cover,
+                        errorBuilder: (_, _, _) => Center(
+                          child: Icon(
+                            Icons.broken_image_outlined,
+                            color: ColorConstant.textGrey,
+                            size: 32.r,
+                          ),
+                        ),
+                      )
                     : Center(
                         child: Text(
                           sublabel ?? '',

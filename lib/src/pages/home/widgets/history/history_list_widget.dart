@@ -9,28 +9,26 @@ class HistoryListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() {
-      if (controller.historyItems.isEmpty) {
-        return Center(
-          child: Text(
-            LocaleKeys.noHistoryItems.tr,
-            style: TextStyle(
-              color: ColorConstant.textGrey,
-              fontSize: 16.sp,
+    return Obx(
+      () => controller.historyItems.isEmpty
+          ? Center(
+              child: Text(
+                LocaleKeys.noHistoryItems.tr,
+                style: TextStyle(
+                  color: ColorConstant.textGrey,
+                  fontSize: 16.sp,
+                ),
+              ),
+            )
+          : ListView.separated(
+              padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
+              itemCount: controller.historyItems.length,
+              separatorBuilder: (_, _) => SizedBox(height: 10.h),
+              itemBuilder: (context, index) {
+                final item = controller.historyItems[index];
+                return HistoryCardWidget(controller: controller, item: item);
+              },
             ),
-          ),
-        );
-      }
-
-      return ListView.separated(
-        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
-        itemCount: controller.historyItems.length,
-        separatorBuilder: (_, _) => SizedBox(height: 10.h),
-        itemBuilder: (context, index) {
-          final item = controller.historyItems[index];
-          return HistoryCardWidget(controller: controller, item: item);
-        },
-      );
-    });
+    );
   }
 }

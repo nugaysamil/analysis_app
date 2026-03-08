@@ -32,6 +32,13 @@ class FaceProcessingService
       // Load, decode and apply EXIF orientation correction.
       onProgress?.call(0.1);
       final original = await ImageProcessingHelper.loadImage(imagePath);
+      if (original == null) {
+        return FaceProcessingResultModel(
+          originalPath: imagePath,
+          processedPath: imagePath,
+          facesDetected: 0,
+        );
+      }
 
       // Save the orientation-corrected image so ML Kit coordinates
       // match the decoded pixel data exactly.
@@ -42,7 +49,13 @@ class FaceProcessingService
       final inputImage = InputImage.fromFilePath(bakedPath);
       final faces = await _faceDetector.processImage(inputImage);
 
-      if (faces.isEmpty) throw Exception('No faces detected');
+      if (faces.isEmpty) {
+        return FaceProcessingResultModel(
+          originalPath: imagePath,
+          processedPath: imagePath,
+          facesDetected: 0,
+        );
+      }
 
       // Apply grayscale filter to each detected face region.
       onProgress?.call(0.5);

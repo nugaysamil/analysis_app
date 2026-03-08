@@ -21,6 +21,11 @@ class ProcessingImageWidget extends StatelessWidget {
         child: Image.file(
           File(imagePath),
           fit: BoxFit.cover,
+          errorBuilder: (_, _, _) => Icon(
+            Icons.broken_image_outlined,
+            color: ColorConstant.textGrey,
+            size: 40.r,
+          ),
         ),
       ),
     );

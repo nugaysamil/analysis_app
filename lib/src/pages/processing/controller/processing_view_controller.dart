@@ -42,12 +42,18 @@ class ProgressingViewController extends GetxController {
   // correct processing pipeline.
   Future<void> _startProcessing() async {
     try {
+      final processingArgs = args;
+      if (processingArgs == null) {
+        Get.back<void>();
+        return;
+      }
+
       // If the caller already knows the type, use it; otherwise detect.
-      _resolvedType = args?.processingType;
+      _resolvedType = processingArgs.processingType;
       if (_resolvedType == null) {
         stepDescription.value = LocaleKeys.detectingContent.tr;
         _resolvedType = await ContentDetectionService.instance.detect(
-          args!.imagePath,
+          processingArgs.imagePath,
         );
       }
 
@@ -69,9 +75,15 @@ class ProgressingViewController extends GetxController {
 
   // Runs the face processing pipeline with live progress updates.
   Future<void> _processFace() async {
+    final processingArgs = args;
+    if (processingArgs == null) {
+      Get.back<void>();
+      return;
+    }
+
     stepDescription.value = LocaleKeys.detectingFaces.tr;
     final result = await FaceProcessingService.instance.process(
-      args!.imagePath,
+      processingArgs.imagePath,
       onProgress: (p) => progress.value = p,
     );
 
@@ -81,9 +93,15 @@ class ProgressingViewController extends GetxController {
 
   // Runs the document processing pipeline with live progress updates.
   Future<void> _processDocument() async {
+    final processingArgs = args;
+    if (processingArgs == null) {
+      Get.back<void>();
+      return;
+    }
+
     stepDescription.value = LocaleKeys.scanningDocument.tr;
     final result = await DocumentProcessingService.instance.process(
-      args!.imagePath,
+      processingArgs.imagePath,
       onProgress: (p) => progress.value = p,
     );
 
@@ -102,11 +120,14 @@ class ProgressingViewController extends GetxController {
     String? processedImagePath,
     String? pdfPath,
   }) async {
+    final processingArgs = args;
+    if (processingArgs == null) return;
+
     final item = HistoryItemModel(
       id: '${DateTime.now().millisecondsSinceEpoch}',
       processingType: _resolvedType ?? ProcessingType.face,
       date: DateTime.now(),
-      thumbnailPath: args!.imagePath,
+      thumbnailPath: processingArgs.imagePath,
       processedImagePath: processedImagePath,
       pdfPath: pdfPath,
     );

@@ -31,7 +31,6 @@ class BatchProcessingView extends StatelessWidget {
                   child: BatchThumbnailGridWidget(controller: controller),
                 ),
               ),
-              SizedBox(height: 24.h),
               BatchProgressWidget(controller: controller),
               SizedBox(height: 24.h),
             ],

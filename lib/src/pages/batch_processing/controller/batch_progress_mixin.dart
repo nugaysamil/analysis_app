@@ -10,13 +10,15 @@ mixin BatchProgressMixin<T extends StatefulWidget>
   Worker? _indexWorker;
   Worker? _itemWorker;
 
+  double _lastTarget = 0.0;
+
   late final AnimationController animController = AnimationController(
     vsync: this,
-    duration: const Duration(milliseconds: 500),
+    duration: const Duration(milliseconds: 200),
   );
 
   late Animation<double> progressAnim = Tween<double>(begin: 0, end: 0)
-      .animate(CurvedAnimation(parent: animController, curve: Curves.easeInOut));
+      .animate(CurvedAnimation(parent: animController, curve: Curves.easeOut));
 
   @override
   void initState() {
@@ -33,9 +35,10 @@ mixin BatchProgressMixin<T extends StatefulWidget>
   }
 
   void animateTo(double target) {
-    final from = progressAnim.value;
+    final from = _lastTarget;
+    _lastTarget = target;
     progressAnim = Tween<double>(begin: from, end: target).animate(
-      CurvedAnimation(parent: animController, curve: Curves.easeInOut),
+      CurvedAnimation(parent: animController, curve: Curves.easeOut),
     );
     animController
       ..reset()

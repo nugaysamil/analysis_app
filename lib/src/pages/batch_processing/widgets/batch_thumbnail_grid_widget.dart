@@ -21,77 +21,61 @@ class BatchThumbnailGridWidget extends StatelessWidget {
       itemCount: controller.totalImages,
       itemBuilder: (context, index) {
         return Obx(() {
-          final isCurrent = controller.currentIndex.value == index;
-          final isDone =
-              index < controller.currentIndex.value ||
-              controller.isComplete.value;
-          final hasFailed =
-              isDone &&
-              index < controller.results.length &&
-              !controller.results[index].isSuccess;
-
+          final state = controller.tileState(index);
           return Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16.r),
-                border: Border.all(
-                  color: isCurrent
-                      ? ColorConstant.primaryPink
-                      : hasFailed
-                          ? Colors.redAccent
-                          : isDone
-                              ? Colors.greenAccent
-                              : ColorConstant.progressTrack,
-                  width: isCurrent ? 3 : 2,
-                ),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(16.r),
+              border: Border.all(
+                color: state.isCurrent
+                    ? ColorConstant.primaryPink
+                    : state.hasFailed
+                    ? Colors.redAccent
+                    : state.isDone
+                    ? Colors.greenAccent
+                    : ColorConstant.progressTrack,
+                width: state.isCurrent ? 3 : 2,
               ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(14.r),
-                child: Stack(
-                  fit: StackFit.expand,
-                  children: [
-                    Image.file(
-                      File(controller.imagePaths[index]),
-                      fit: BoxFit.cover,
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(14.r),
+              child: Stack(
+                fit: StackFit.expand,
+                children: [
+                  Image.file(
+                    File(controller.imagePaths[index]),
+                    fit: BoxFit.cover,
+                    errorBuilder: (_, _, _) => Container(
+                      color: ColorConstant.cardBackground,
+                      child: Icon(
+                        Icons.broken_image_outlined,
+                        color: ColorConstant.textGrey,
+                        size: 28.r,
+                      ),
                     ),
-                    if (isDone && !hasFailed)
-                      Container(
-                        color: Colors.black38,
-                        child: Icon(
-                          Icons.check_circle,
-                          color: Colors.greenAccent,
-                          size: 28.r,
-                        ),
+                  ),
+                  if (state.isDone && !state.hasFailed)
+                    Container(
+                      color: Colors.black38,
+                      child: Icon(
+                        Icons.check_circle,
+                        color: Colors.greenAccent,
+                        size: 28.r,
                       ),
-                    if (hasFailed)
-                      Container(
-                        color: Colors.black38,
-                        child: Icon(
-                          Icons.error,
-                          color: Colors.redAccent,
-                          size: 28.r,
-                        ),
+                    ),
+                  if (state.hasFailed)
+                    Container(
+                      color: Colors.black38,
+                      child: Icon(
+                        Icons.error,
+                        color: Colors.redAccent,
+                        size: 28.r,
                       ),
-                    if (isCurrent && !controller.isComplete.value)
-                      Container(
-                        color: Colors.black26,
-                        child: Center(
-                          child: SizedBox(
-                            width: 28.r,
-                            height: 28.r,
-                            child: const CircularProgressIndicator(
-                              strokeWidth: 3,
-                              valueColor: AlwaysStoppedAnimation<Color>(
-                                ColorConstant.primaryPink,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                  ],
-                ),
+                    ),
+                ],
               ),
-            );
-          });
+            ),
+          );
+        });
       },
     );
   }

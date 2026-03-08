@@ -31,6 +31,15 @@ class BatchProcessingController extends GetxController {
   double get overallProgress =>
       totalImages == 0 ? 0 : (currentIndex.value + itemProgress.value) / totalImages;
 
+  ({bool isCurrent, bool isDone, bool hasFailed}) tileState(int index) {
+    final isCurrent = currentIndex.value == index;
+    final isDone = index < currentIndex.value || isComplete.value;
+    final hasFailed =
+        isDone && index < results.length && !results[index].isSuccess;
+
+    return (isCurrent: isCurrent, isDone: isDone, hasFailed: hasFailed);
+  }
+
   @override
   void onInit() {
     super.onInit();

@@ -12,11 +12,12 @@ class ImageProcessingHelper {
 
   // Reads the file bytes, decodes to an img.Image instance,
   // and applies EXIF orientation so pixel data matches the visual orientation.
-  static Future<img.Image> loadImage(String imagePath) async {
-        final bytes = await File(imagePath).readAsBytes();
-        final decoded = img.decodeImage(bytes);
-    if (decoded == null) throw Exception('Failed to decode image');
-        return img.bakeOrientation(decoded);
+  // Returns null if the image cannot be decoded.
+  static Future<img.Image?> loadImage(String imagePath) async {
+    final bytes = await File(imagePath).readAsBytes();
+    final decoded = img.decodeImage(bytes);
+    if (decoded == null) return null;
+    return img.bakeOrientation(decoded);
   }
 
   // Saves the baked (EXIF-corrected) image to a temp file so ML Kit

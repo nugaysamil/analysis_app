@@ -26,8 +26,8 @@ class BatchSummaryListWidget extends StatelessWidget {
               borderRadius: BorderRadius.circular(16.r),
               border: Border.all(
                 color: item.isSuccess
-                    ? Colors.greenAccent.withValues(alpha: 0.3)
-                    : Colors.redAccent.withValues(alpha: 0.3),
+                    ? Colors.greenAccent.withValues(alpha: 0.1)
+                    : Colors.redAccent.withValues(alpha: 0.1),
               ),
             ),
             child: Row(
@@ -40,6 +40,14 @@ class BatchSummaryListWidget extends StatelessWidget {
                     child: Image.file(
                       File(item.originalPath),
                       fit: BoxFit.cover,
+                      errorBuilder: (_, _, _) => Container(
+                        color: ColorConstant.cardBackground,
+                        child: Icon(
+                          Icons.broken_image_outlined,
+                          color: ColorConstant.textGrey,
+                          size: 24.r,
+                        ),
+                      ),
                     ),
                   ),
                 ),
@@ -62,7 +70,7 @@ class BatchSummaryListWidget extends StatelessWidget {
                       Text(
                         item.isSuccess
                             ? LocaleKeys.viewDetails.tr
-                            : '${LocaleKeys.failed.tr}: ${item.error}',
+                            : LocaleKeys.failed.tr,
                         style: TextStyle(
                           color: item.isSuccess
                               ? ColorConstant.textGrey
