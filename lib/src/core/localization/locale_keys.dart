@@ -45,4 +45,16 @@ class LocaleKeys {
   static const String processingError = 'processing_error';
   static const String detectingContent = 'detecting_content';
   static const String goBack = 'go_back';
+
+  // Batch processing
+  static const String batchProcessing = 'batch_processing';
+  static const String batchGallery = 'batch_gallery';
+  static const String processingImageOf = 'processing_image_of';
+  static const String batchComplete = 'batch_complete';
+  static const String batchSummary = 'batch_summary';
+  static const String successCount = 'success_count';
+  static const String failedCount = 'failed_count';
+  static const String viewDetails = 'view_details';
+  static const String failed = 'failed';
+  static const String backToHome = 'back_to_home';
 }

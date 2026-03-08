@@ -31,13 +31,17 @@ class HomeViewController extends GetxController {
   String formatHistoryDate(DateTime date) =>
       DateFormat(StringConstant.dateFormat).format(date);
 
-  // Opens the choose source dialog (Camera / Gallery).
+  // Opens the choose source dialog (Camera / Gallery / Batch Gallery).
   void onNewCaptureTap() {
     showDialog<ImageSource>(
       context: Get.context!,
       builder: (_) => ChooseSourceDialogWidget(
         onCameraTap: () => Get.back(result: ImageSource.camera),
         onGalleryTap: () => Get.back(result: ImageSource.gallery),
+        onBatchGalleryTap: () {
+          Get.back<void>();
+          pickMultipleImages();
+        },
       ),
     ).then((source) {
       if (source != null) _pickImage(source);
@@ -67,6 +71,23 @@ class HomeViewController extends GetxController {
       );
 
       // Refresh history from cache after returning from the processing flow.
+      _loadHistory();
+    } catch (e, stack) {
+      AppErrorHandler.log(StringConstant.tagHomeViewModel, e, stack);
+    }
+  }
+
+  // Picks multiple images from gallery and navigates to batch processing.
+  Future<void> pickMultipleImages() async {
+    try {
+      final files = await _picker.pickMultiImage();
+      if (files.isEmpty) return;
+
+      final paths = files.map((f) => f.path).toList();
+
+      await Get.toNamed<void>(AppRoutes.batchProcessing, arguments: paths);
+
+      // Refresh history from cache after returning from the batch flow.
       _loadHistory();
     } catch (e, stack) {
       AppErrorHandler.log(StringConstant.tagHomeViewModel, e, stack);

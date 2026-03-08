@@ -42,6 +42,16 @@ class AppTranslations extends Translations {
     'processing_error': 'Processing Failed',
     'detecting_content': 'Detecting content...',
     'go_back': 'Go Back',
+    'batch_processing': 'Batch Processing',
+    'batch_gallery': 'Batch Gallery',
+    'processing_image_of': 'Processing image @current of @total',
+    'batch_complete': 'Batch Complete',
+    'batch_summary': 'Batch Summary',
+    'success_count': '@count Successful',
+    'failed_count': '@count Failed',
+    'view_details': 'View Details',
+    'failed': 'Failed',
+    'back_to_home': 'Back to Home',
   };
 
   static const Map<String, String> _trTR = {
@@ -73,5 +83,15 @@ class AppTranslations extends Translations {
     'processing_error': 'İşlem Başarısız',
     'detecting_content': 'İçerik tespit ediliyor...',
     'go_back': 'Geri Dön',
+    'batch_processing': 'Toplu İşlem',
+    'batch_gallery': 'Toplu Galeri',
+    'processing_image_of': '@current / @total görsel işleniyor',
+    'batch_complete': 'Toplu İşlem Tamamlandı',
+    'batch_summary': 'Toplu Özet',
+    'success_count': '@count Başarılı',
+    'failed_count': '@count Başarısız',
+    'view_details': 'Detayları Gör',
+    'failed': 'Başarısız',
+    'back_to_home': 'Ana Sayfaya Dön',
   };
 }

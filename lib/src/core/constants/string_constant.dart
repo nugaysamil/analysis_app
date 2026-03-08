@@ -5,6 +5,8 @@ class StringConstant {
   static const String appTitle = 'ImageFlow';
   static const String dateFormat = 'MMM dd, yyyy';
   static const String pdf = 'PDF';
+  static const String robotoRegularFontUrl =
+      'https://fonts.gstatic.com/s/roboto/v30/KFOmCnqEu92Fr1Mu4mxP.ttf';
 
   // Hive box names
   static const String historyBox = 'history_box';
@@ -18,4 +20,5 @@ class StringConstant {
   static const String tagHomeViewModel = 'HomeViewModel';
   static const String tagPdfResultViewModel = 'PdfResultViewModel';
   static const String tagProcessingViewModel = 'ProcessingViewModel';
+  static const String tagBatchProcessingViewModel = 'BatchProcessingViewModel';
 }

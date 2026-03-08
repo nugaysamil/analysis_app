@@ -22,17 +22,6 @@ class ProcessingErrorBodyWidget extends StatelessWidget {
           ),
           textAlign: TextAlign.center,
         ),
-        SizedBox(height: 8.h),
-        Text(
-          controller.errorMessage.value,
-          style: TextStyle(
-            color: ColorConstant.textGrey,
-            fontSize: 13.sp,
-          ),
-          textAlign: TextAlign.center,
-          maxLines: 3,
-          overflow: TextOverflow.ellipsis,
-        ),
         SizedBox(height: 24.h),
         SizedBox(
           width: double.infinity,

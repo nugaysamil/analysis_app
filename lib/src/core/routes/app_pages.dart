@@ -1,3 +1,5 @@
+import 'package:analysis_app/src/pages/batch_processing/view/batch_processing_view.dart';
+import 'package:analysis_app/src/pages/batch_summary/view/batch_summary_view.dart';
 import 'package:analysis_app/src/pages/processing/view/processing_view.dart';
 import 'package:analysis_app/src/core/bindings/app_bindings.dart';
 import 'package:analysis_app/src/core/routes/app_routes.dart';
@@ -38,6 +40,16 @@ class AppPages {
       name: AppRoutes.historyDetail,
       page: HistoryDetailView.new,
       binding: AppBindings.historyDetail(),
+    ),
+    GetPage<dynamic>(
+      name: AppRoutes.batchProcessing,
+      page: BatchProcessingView.new,
+      binding: AppBindings.batchProcessing(),
+    ),
+    GetPage<dynamic>(
+      name: AppRoutes.batchSummary,
+      page: BatchSummaryView.new,
+      binding: AppBindings.batchSummary(),
     ),
   ];
 }

@@ -6,10 +6,12 @@ class ChooseSourceDialogWidget extends StatelessWidget {
     super.key,
     required this.onCameraTap,
     required this.onGalleryTap,
+    this.onBatchGalleryTap,
   });
 
   final VoidCallback onCameraTap;
   final VoidCallback onGalleryTap;
+  final VoidCallback? onBatchGalleryTap;
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +47,14 @@ class ChooseSourceDialogWidget extends StatelessWidget {
               label: LocaleKeys.gallery.tr,
               onTap: onGalleryTap,
             ),
+            if (onBatchGalleryTap != null) ...[
+              SizedBox(height: 12.h),
+              ChooseSourceOptionTileWidget(
+                icon: Icons.photo_library_rounded,
+                label: LocaleKeys.batchGallery.tr,
+                onTap: onBatchGalleryTap!,
+              ),
+            ],
           ],
         ),
       ),
