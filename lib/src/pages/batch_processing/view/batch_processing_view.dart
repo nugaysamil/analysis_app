@@ -26,9 +26,7 @@ class BatchProcessingView extends GetView<BatchProcessingController> {
               ),
               SizedBox(height: 24.h),
               Expanded(
-                child: SingleChildScrollView(
-                  child: BatchThumbnailGridWidget(controller: controller),
-                ),
+                child: BatchThumbnailGridWidget(controller: controller),
               ),
               BatchProgressWidget(controller: controller),
               SizedBox(height: 24.h),

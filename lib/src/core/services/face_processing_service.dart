@@ -72,8 +72,13 @@ class FaceProcessingService
 
         if (w <= 0 || h <= 0) continue;
 
-        final faceCrop =
-            img.copyCrop(composite, x: x, y: y, width: w, height: h);
+        final faceCrop = img.copyCrop(
+          composite,
+          x: x,
+          y: y,
+          width: w,
+          height: h,
+        );
         final grayscaleFace = img.grayscale(faceCrop);
 
         img.compositeImage(composite, grayscaleFace, dstX: x, dstY: y);

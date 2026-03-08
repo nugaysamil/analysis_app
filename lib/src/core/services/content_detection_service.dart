@@ -21,9 +21,6 @@ class ContentDetectionService {
 
   final TextRecognizer _textRecognizer = TextRecognizer();
 
-  // Minimum character count to consider an image as a document.
-  static const int _minDocumentTextLength = 20;
-
   // Detects content type by running face and text detection in parallel.
   // Prioritizes face detection; falls back to document only if
   // meaningful amount of text is found.
@@ -45,7 +42,8 @@ class ContentDetectionService {
       if (faces.isNotEmpty) {
         return ProcessingType.face;
       }
-      if (recognizedText.text.trim().length >= _minDocumentTextLength) {
+      if (recognizedText.text.trim().length >=
+          StringConstant.minDocumentTextLength) {
         return ProcessingType.document;
       }
     } catch (e, stack) {

@@ -132,14 +132,12 @@ class DocumentProcessingService
 
     // 1. Resize to OCR-optimal window: downsample large images to cap
     //    expensive per-pixel filter work; upsample very small ones.
-    const maxOcrDim = 1400;
-    const minOcrDim = 800;
     final longer = math.max(result.width, result.height);
     final shorter = math.min(result.width, result.height);
-    if (longer > maxOcrDim) {
-      result = _capResolution(result, maxOcrDim);
-    } else if (shorter < minOcrDim) {
-      final scale = minOcrDim / shorter;
+    if (longer > StringConstant.maxOcrDim) {
+      result = _capResolution(result, StringConstant.maxOcrDim);
+    } else if (shorter < StringConstant.minOcrDim) {
+      final scale = StringConstant.minOcrDim / shorter;
       result = img.copyResize(
         result,
         width: (result.width * scale).round(),
@@ -690,7 +688,6 @@ class DocumentProcessingService
     await File(pdfPath).writeAsBytes(bytes);
     return pdfPath;
   }
-
 
   // Downloads and caches Roboto Regular font for Syncfusion PDF generation.
   // Needed for Turkish character support (ş, ç, ğ, ı, ö, ü).

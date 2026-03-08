@@ -22,7 +22,6 @@ dependencies:
   json_annotation: ^4.11.0
   open_file: ^3.5.10
   path_provider: ^2.1.5
-  printing: ^5.13.4
   syncfusion_flutter_pdf: ^32.2.8
 
 dev_dependencies:
@@ -35,6 +34,3 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
-
-  assets:
-  

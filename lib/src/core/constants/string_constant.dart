@@ -12,6 +12,11 @@ class StringConstant {
   // Hive box names
   static const String historyBox = 'history_box';
 
+  // OCR processing dimensions
+  static const int maxOcrDim = 1400;
+  static const int minOcrDim = 800;
+  static const int minDocumentTextLength = 20;
+
   // Log tags
   static const String tagContentDetectionService = 'ContentDetectionService';
   static const String tagDocumentProcessingService = 'DocumentProcessingService';
