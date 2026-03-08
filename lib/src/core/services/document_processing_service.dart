@@ -32,31 +32,38 @@ class DocumentProcessingService
   }) async {
     // Load, decode and apply EXIF orientation correction.
     onProgress?.call(0.1);
-    final original = await ImageProcessingHelper.loadImage(imagePath);
+    await Future<void>.delayed(Duration.zero);
+    final loaded = await ImageProcessingHelper.loadImage(imagePath);
+    if (loaded == null) {
+      return DocumentProcessingResultModel(
+        originalPath: imagePath,
+        processedImagePath: imagePath,
+        pdfPath: '',
+        recognizedText: '',
+      );
+    }
 
-    // Prepare OCR-optimized image: grayscale + sharpen + high contrast
-    // so ML Kit reads characters more accurately.
+    // Downscale large originals so every subsequent operation (perspective
+    // correction, contrast enhance, JPEG encode) runs on a bounded canvas.
+    final original = _capResolution(loaded, 2500);
+
+    // Prepare a smaller OCR-optimized copy — filters are O(px) so capping
+    // at 1400px makes gaussianBlur + convolution ~6-18× faster.
     onProgress?.call(0.15);
     final ocrImage = _prepareForOcr(img.Image.from(original));
     final ocrPath = await ImageProcessingHelper.saveTempBaked(ocrImage);
 
     // Run ML Kit text recognition (OCR) on the optimized image.
     onProgress?.call(0.3);
+    await Future<void>.delayed(Duration.zero);
     final inputImage = InputImage.fromFilePath(ocrPath);
     var recognizedText = await _textRecognizer.processImage(inputImage);
 
-    // Fallback: if the aggressively pre-processed image produced no text
-    // (common with gallery images — screenshots, digital docs — where high
-    // contrast/sharpen hurts readability), retry OCR on the orientation-
-    // corrected original without any preprocessing.
+    // Fallback: if the preprocessed image yielded no text, retry on the
+    // original file directly — no extra disk write needed.
     if (recognizedText.text.trim().isEmpty) {
-      final fallbackPath =
-          '${await ImageProcessingHelper.getOutputDirectory()}/temp_ocr_orig.jpg';
-      await File(
-        fallbackPath,
-      ).writeAsBytes(img.encodeJpg(original, quality: 95));
       recognizedText = await _textRecognizer.processImage(
-        InputImage.fromFilePath(fallbackPath),
+        InputImage.fromFilePath(imagePath),
       );
     }
 
@@ -77,12 +84,13 @@ class DocumentProcessingService
     onProgress?.call(0.75);
     final processedPath = await ImageProcessingHelper.saveImage(
       enhanced,
-      prefix: 'doc_processed',
-      quality: 95,
+      prefix: StringConstant.docProcessedPrefix,
+      quality: 85,
     );
 
     // Generate a PDF containing the processed image and recognized text.
     onProgress?.call(0.9);
+    await Future<void>.delayed(Duration.zero);
     final dirPath = await ImageProcessingHelper.getOutputDirectory();
     final timestamp = DateTime.now().millisecondsSinceEpoch;
     final normalizedText = _normalizeOcrText(recognizedText.text);
@@ -104,19 +112,38 @@ class DocumentProcessingService
     );
   }
 
+  // Clamps the longest side of [image] to [maxSide] using linear
+  // interpolation. Returns the original if already within bounds.
+  img.Image _capResolution(img.Image image, int maxSide) {
+    final longer = math.max(image.width, image.height);
+    if (longer <= maxSide) return image;
+    final scale = maxSide / longer;
+    return img.copyResize(
+      image,
+      width: (image.width * scale).round(),
+      interpolation: img.Interpolation.linear,
+    );
+  }
+
   // Converts image to grayscale, denoises, sharpens, and boosts contrast
   // to maximize ML Kit text recognition accuracy.
   img.Image _prepareForOcr(img.Image image) {
     var result = image;
 
-    // 1. Upscale small images — ML Kit needs sufficient resolution.
-    const minDim = 2000;
-    if (result.width < minDim && result.height < minDim) {
-      final scale = minDim / math.min(result.width, result.height);
+    // 1. Resize to OCR-optimal window: downsample large images to cap
+    //    expensive per-pixel filter work; upsample very small ones.
+    const maxOcrDim = 1400;
+    const minOcrDim = 800;
+    final longer = math.max(result.width, result.height);
+    final shorter = math.min(result.width, result.height);
+    if (longer > maxOcrDim) {
+      result = _capResolution(result, maxOcrDim);
+    } else if (shorter < minOcrDim) {
+      final scale = minOcrDim / shorter;
       result = img.copyResize(
         result,
-        width: (result.width * scale).toInt(),
-        interpolation: img.Interpolation.cubic,
+        width: (result.width * scale).round(),
+        interpolation: img.Interpolation.linear,
       );
     }
 
@@ -389,7 +416,7 @@ class DocumentProcessingService
       topRight: img.Point(tr.x, tr.y),
       bottomLeft: img.Point(bl.x, bl.y),
       bottomRight: img.Point(br.x, br.y),
-      interpolation: img.Interpolation.cubic,
+      interpolation: img.Interpolation.linear,
       toImage: dest,
     );
   }
@@ -584,9 +611,7 @@ class DocumentProcessingService
 
   // Applies contrast enhancement and slight brightness boost for readability.
   img.Image _enhanceContrast(img.Image image) {
-    var result = img.adjustColor(image, contrast: 1.3);
-    result = img.adjustColor(result, brightness: 1.05);
-    return result;
+    return img.adjustColor(image, contrast: 1.3, brightness: 1.05);
   }
 
   // Generates a searchable PDF with the processed image and recognized text
@@ -665,6 +690,7 @@ class DocumentProcessingService
     await File(pdfPath).writeAsBytes(bytes);
     return pdfPath;
   }
+
 
   // Downloads and caches Roboto Regular font for Syncfusion PDF generation.
   // Needed for Turkish character support (ş, ç, ğ, ı, ö, ü).
