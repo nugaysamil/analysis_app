@@ -23,7 +23,7 @@ class HistoryListWidget extends StatelessWidget {
           : ListView.separated(
               padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
               itemCount: controller.historyItems.length,
-              separatorBuilder: (_, _) => SizedBox(height: 10.h),
+              separatorBuilder: (_, __) => SizedBox(height: 10.h),
               itemBuilder: (context, index) {
                 final item = controller.historyItems[index];
                 return HistoryCardWidget(controller: controller, item: item);
