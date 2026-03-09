@@ -14,7 +14,7 @@ class BatchSummaryListWidget extends StatelessWidget {
     return ListView.separated(
       padding: EdgeInsets.symmetric(horizontal: 16.w),
       itemCount: controller.results.length,
-      separatorBuilder: (_, _) => SizedBox(height: 12.h),
+      separatorBuilder: (_, __) => SizedBox(height: 12.h),
       itemBuilder: (context, index) {
         final item = controller.results[index];
         return GestureDetector(
