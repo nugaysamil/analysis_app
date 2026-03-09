@@ -45,7 +45,7 @@ class BatchThumbnailGridWidget extends StatelessWidget {
                     Image.file(
                       File(controller.imagePaths[index]),
                       fit: BoxFit.cover,
-                      errorBuilder: (_, _, _) => Container(
+                      errorBuilder: (_, __, ___) => Container(
                         color: ColorConstant.cardBackground,
                         child: Icon(
                           Icons.broken_image_outlined,

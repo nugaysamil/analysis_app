@@ -40,7 +40,7 @@ class BatchSummaryListWidget extends StatelessWidget {
                     child: Image.file(
                       File(item.originalPath),
                       fit: BoxFit.cover,
-                      errorBuilder: (_, _, _) => Container(
+                      errorBuilder: (_, __, ___) => Container(
                         color: ColorConstant.cardBackground,
                         child: Icon(
                           Icons.broken_image_outlined,

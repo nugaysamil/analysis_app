@@ -50,7 +50,7 @@ class FaceResultImageCardWidget extends StatelessWidget {
                     ? Image.file(
                         File(imagePath),
                         fit: BoxFit.cover,
-                        errorBuilder: (_, _, _) => Center(
+                        errorBuilder: (_, __, ___) => Center(
                           child: Icon(
                             Icons.broken_image_outlined,
                             color: ColorConstant.textGrey,
